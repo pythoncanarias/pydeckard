@@ -9,7 +9,7 @@ Telegram Bot made in Python to automate different tasks
 
 Create a *virtualenv* with Python3 and run the following:
 
-```console
+```bash
 $ pip install -r requirements.txt
 $ cp config.example.py config.py
 # fill in your settings
