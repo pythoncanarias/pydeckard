@@ -1,5 +1,18 @@
 # PyDeckard
 
-> "He visto cosas que vosotros no creeríais" En honor a Rick Deckard de Blade Runner.
+> "I've seen things you people wouldn't believe"  
+> In honour of Rick Deckard from Blade Runner.
 
-Bot de Telegram hecho en Python para automatizar distintas tareas.
+Telegram Bot made in Python to automate different tasks
+
+## Installation
+
+Create a *virtualenv* with Python3 and run the following:
+
+```console
+$ pip install -r requirements.txt
+$ cp config.example.py config.py
+# fill in your settings
+
+$ python bot.py
+```
