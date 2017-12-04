@@ -5,7 +5,7 @@ from telegram.ext import Updater, Filters, MessageHandler
 
 def welcome(bot, update):
     new_member = update.message.new_chat_members[0]
-    if new_member.is_bot and new_member.username != "pydeckard_bot":
+    if new_member.is_bot:
         msg = f"{new_member.name} is a *bot*!! " \
                "-> It could be kindly removed 🗑"
     else:
