@@ -1,3 +1,3 @@
 REPLY = {
-    ("java", "queso blanco"): "BIBA JABA!! ☕️",
+    ("java",): "BIBA JABA!! ☕️",
 }
