@@ -1,6 +1,7 @@
 import config
 import telegram
 from telegram.ext import Updater, Filters, MessageHandler
+import re
 
 
 def welcome(bot, update):
@@ -18,12 +19,22 @@ def welcome(bot, update):
     )
 
 
+def reply(bot, update):
+    msg = update.message.text
+    for key, value in config.REPLY.items():
+        regex = "|".join(key)
+        if re.search(regex, msg, re.I):
+            bot.send_message(
+                chat_id=update.message.chat_id,
+                text=value
+            )
+
+
 updater = Updater(config.TELEGRAM_BOT_TOKEN)
+dp = updater.dispatcher
 
-updater.dispatcher.add_handler(
-    MessageHandler(Filters.status_update.new_chat_members, welcome)
-)
-
+dp.add_handler(MessageHandler(Filters.status_update.new_chat_members, welcome))
+dp.add_handler(MessageHandler(Filters.group, reply))
 
 updater.start_polling()
 updater.idle()
