@@ -1,4 +1,5 @@
 import config
+from myconfig import TELEGRAM_BOT_TOKEN
 import telegram
 from telegram.ext import Updater, Filters, MessageHandler
 import re
@@ -30,7 +31,7 @@ def reply(bot, update):
             )
 
 
-updater = Updater(config.TELEGRAM_BOT_TOKEN)
+updater = Updater(TELEGRAM_BOT_TOKEN)
 dp = updater.dispatcher
 
 dp.add_handler(MessageHandler(Filters.status_update.new_chat_members, welcome))

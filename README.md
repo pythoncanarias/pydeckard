@@ -13,8 +13,6 @@ Create a *virtualenv* with Python3 and run the following:
 
 ```bash
 $ pip install -r requirements.txt
-$ cp config.example.py config.py
-# fill in your settings
-
+$ echo 'TELEGRAM_BOT_TOKEN = "<token of your dev bot>"' > myconfig.py
 $ python bot.py
 ```
