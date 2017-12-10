@@ -9,8 +9,8 @@ def welcome(bot, update):
         msg = f"{new_member.name} is a *bot*!! " \
                "-> It could be kindly removed 🗑"
     else:
-        msg = f"Welcome *{new_member.name}*!! " \
-               "I am a friendly and polite bot 🤖"
+        msg = f"Welcome {new_member.name}!! " \
+               "I am a friendly and polite *bot* 🤖"
     bot.send_message(
         chat_id=update.message.chat_id,
         text=msg,
