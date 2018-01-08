@@ -23,7 +23,7 @@ def welcome(bot, update):
 def reply(bot, update):
     msg = update.message.text
     for key, value in config.REPLY.items():
-        regex = "|".join(key)
+        regex = "|".join([fr"\b{x}\b" for x in key])
         if re.search(regex, msg, re.I):
             bot.send_message(
                 chat_id=update.message.chat_id,
