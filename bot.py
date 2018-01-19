@@ -1,3 +1,4 @@
+import random
 import config
 from myconfig import TELEGRAM_BOT_TOKEN
 import telegram
@@ -25,10 +26,11 @@ def reply(bot, update):
     for key, value in config.REPLY.items():
         regex = "|".join([fr"\b{x}\b" for x in key])
         if re.search(regex, msg, re.I):
-            bot.send_message(
-                chat_id=update.message.chat_id,
-                text=value
-            )
+            if random.random() < 0.33:
+                bot.send_message(
+                    chat_id=update.message.chat_id,
+                    text=value
+                )
 
 
 updater = Updater(TELEGRAM_BOT_TOKEN)
