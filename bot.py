@@ -27,6 +27,10 @@ def reply(bot, update):
         regex = "|".join([fr"\b{x}\b" for x in key])
         if re.search(regex, msg, re.I):
             if random.random() < 0.33:
+                if not isinstance(value, str):
+                    # if value is a list
+                    # then pick random string from multiple values
+                    value = random.choice(value)
                 bot.send_message(
                     chat_id=update.message.chat_id,
                     text=value
