@@ -1,3 +1,6 @@
+# bot verbosity (0 ... 1)
+VERBOSITY = 0.33
+
 PYZEN = [
     "Beautiful is better than ugly.",
     "Explicit is better than implicit.",
