@@ -1,3 +1,5 @@
 *.pyc
 pycache
 myconfig.py
+virtualenv
+.idea
