@@ -42,14 +42,15 @@ def reply(bot, update):
 def ban_bots(bot, update):
     new_member = update.message.new_chat_members[0]
     if is_bot(new_member):
-        msg = f"{new_member.username} has been banned. " \
-              f"`Replicants are like any other machine, are either a benefit or a hazard.`"
-        bot.kick_chat_member(update.message.chat_id, new_member.id)
-        bot.send_message(
-            chat_id=update.message.chat_id,
-            text=msg,
-            parse_mode=telegram.ParseMode.MARKDOWN
-        )
+        if bot.kick_chat_member(update.message.chat_id, new_member.id):
+            msg = f"*{new_member.username}* has been banned because I think he was a bot. " \
+                  f"`Replicants are like any other machine, are either a benefit or a hazard. " \
+                  f"If they're a benefit it's not my problem.`"
+            bot.send_message(
+                chat_id=update.message.chat_id,
+                text=msg,
+                parse_mode=telegram.ParseMode.MARKDOWN
+            )
 
 
 updater = Updater(TELEGRAM_BOT_TOKEN)
