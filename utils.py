@@ -15,8 +15,8 @@ def is_bot(user: User):
     """
     # Add all the checks that you consider necessary
 
-    return check_username(user)
+    return is_valid_name(user)
 
 
-def check_username(user: User):
-    return True if len(user.name) > USERNAME_MAX_LENGTH else False
+def is_valid_name(user: User):
+    return True if len(user.first_name) > USERNAME_MAX_LENGTH else False

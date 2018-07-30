@@ -3,24 +3,31 @@ import config
 import re
 import telegram
 from telegram.ext import Updater, Filters, MessageHandler
-from telegram.chat import Chat
+from telegram import Bot, Update
 from myconfig import TELEGRAM_BOT_TOKEN
 from utils import is_bot
 
 
-def welcome(bot, update):
+def welcome(bot: Bot, update: Update):
     new_member = update.message.new_chat_members[0]
+    msg = ""
+
     if new_member.is_bot:
         msg = f"{new_member.name} is a *bot*!! " \
-               "-> It could be kindly removed 🗑"
+              "-> It could be kindly removed 🗑"
     else:
-        msg = f"Welcome {new_member.name}!! " \
-               "I am a friendly and polite *bot* 🤖"
-    bot.send_message(
-        chat_id=update.message.chat_id,
-        text=msg,
-        parse_mode=telegram.ParseMode.MARKDOWN
-    )
+        if is_bot(new_member):
+            if bot.kick_chat_member(update.message.chat_id, new_member.id):
+                msg = f"*{new_member.username}* has been banned because I considered he was a bot. "
+        else:
+            msg = f"Welcome {new_member.name}!! " \
+                   "I am a friendly and polite *bot* 🤖"
+    if msg:
+        bot.send_message(
+            chat_id=update.message.chat_id,
+            text=msg,
+            parse_mode=telegram.ParseMode.MARKDOWN
+        )
 
 
 def reply(bot, update):
@@ -39,25 +46,10 @@ def reply(bot, update):
                 )
 
 
-def ban_bots(bot, update):
-    new_member = update.message.new_chat_members[0]
-    if is_bot(new_member):
-        if bot.kick_chat_member(update.message.chat_id, new_member.id):
-            msg = f"*{new_member.username}* has been banned because I think he was a bot. " \
-                  f"`Replicants are like any other machine, are either a benefit or a hazard. " \
-                  f"If they're a benefit it's not my problem.`"
-            bot.send_message(
-                chat_id=update.message.chat_id,
-                text=msg,
-                parse_mode=telegram.ParseMode.MARKDOWN
-            )
-
-
 updater = Updater(TELEGRAM_BOT_TOKEN)
 dp = updater.dispatcher
 
 dp.add_handler(MessageHandler(Filters.status_update.new_chat_members, welcome))
-dp.add_handler(MessageHandler(Filters.status_update.new_chat_members, ban_bots))
 dp.add_handler(MessageHandler(Filters.group, reply))
 
 updater.start_polling()
