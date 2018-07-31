@@ -9,10 +9,20 @@ Telegram Bot made in Python to automate different tasks of [Python Canarias](htt
 
 ## Installation
 
-Create a *virtualenv* with Python3 and run the following:
+Create the virtualenv for Python3 and install dependencies with:
 
-```bash
-$ pip install -r requirements.txt
-$ echo 'TELEGRAM_BOT_TOKEN = "<token of your dev bot>"' > myconfig.py
+~~~console
+$ pipenv install
+~~~
+
+Next step is to set your bot token for development:
+
+~~~console
+$ echo 'TELEGRAM_BOT_TOKEN = "<token of your dev bot>"' > .env
+~~~
+
+Now you can launch the bot with:
+
+~~~console
 $ python bot.py
-```
+~~~
