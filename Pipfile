@@ -7,8 +7,8 @@ name = "pypi"
 python-telegram-bot = "*"
 
 [dev-packages]
-Fabric = "*"
 "flake8" = "*"
+"fabric3" = "*"
 
 [requires]
 python_version = "3.6"
