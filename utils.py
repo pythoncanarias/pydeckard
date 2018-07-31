@@ -1,14 +1,12 @@
 from telegram import User
-
-USERNAME_MAX_LENGTH = 100
+import config
 
 
 def is_bot(user: User):
     """
-    Returns true if a new username is a bot. For now only the length of the
-    username is checked.
-    In the future, we can add more functions and use a score/weight of the
-    probability of being a bot
+    Returns True if a new user is a bot. So far only the length of the
+    username is checked. In the future, we can add more conditions and use a
+    score/weight of the probability of being a bot.
 
     :param user: The new User
     :type user: User
@@ -16,9 +14,8 @@ def is_bot(user: User):
     :rtype: bool
     """
     # Add all the checks that you consider necessary
-
-    return is_valid_name(user)
+    return not is_valid_name(user)
 
 
 def is_valid_name(user: User):
-    return True if len(user.first_name) > USERNAME_MAX_LENGTH else False
+    return len(user.first_name) <= config.MAXLEN_FOR_USERNAME_TO_TREAT_AS_HUMAN

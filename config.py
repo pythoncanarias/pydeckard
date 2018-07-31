@@ -3,7 +3,7 @@ from prettyconf import config
 TELEGRAM_BOT_TOKEN = config(
     "TELEGRAM_BOT_TOKEN",
     default="put here the token of your bot"
-  )
+)
 
 # bot verbosity (0 ... 1)
 VERBOSITY = 0.33
@@ -42,3 +42,5 @@ REPLY = {
         "tiempo... como lágrimas en la lluvia. Es hora de morir. 🔫",
     ("python", "pitón", "piton"): PYZEN,
 }
+
+MAXLEN_FOR_USERNAME_TO_TREAT_AS_HUMAN = 100

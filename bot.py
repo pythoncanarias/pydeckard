@@ -9,7 +9,7 @@ from utils import is_bot
 
 def welcome(bot: Bot, update: Update):
     new_member = update.message.new_chat_members[0]
-    msg = ""
+    msg = None
 
     if new_member.is_bot:
         msg = f"{new_member.name} is a *bot*!! " \
@@ -18,7 +18,7 @@ def welcome(bot: Bot, update: Update):
         if is_bot(new_member):
             if bot.kick_chat_member(update.message.chat_id, new_member.id):
                 msg = (f"*{new_member.username}* has been banned because I "
-                       "considered he was a bot. ")
+                       "considered it was a bot. ")
         else:
             msg = f"Welcome {new_member.name}!! " \
                    "I am a friendly and polite *bot* 🤖"
