@@ -5,10 +5,12 @@ name = "pypi"
 
 [packages]
 python-telegram-bot = "*"
+prettyconf = "*"
 
 [dev-packages]
 "flake8" = "*"
 "fabric3" = "*"
+rope = "*"
 
 [requires]
 python_version = "3.6"

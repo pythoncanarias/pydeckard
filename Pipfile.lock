@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "b16af6640cdbdec4ebaa924b3c177fc12f6351d14e8b3b40fc83b529eaf0a659"
+            "sha256": "166c8c200c7bdafddd9886aa55b614cfa846f70889702d705c35e483d84fd3b4"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -28,6 +28,13 @@
                 "sha256:e39ced1ab767b5936646cedba8bcce582398233d6a627067d4c6a454c90cfedb"
             ],
             "version": "==0.16.0"
+        },
+        "prettyconf": {
+            "hashes": [
+                "sha256:83a23f3e01a2bb3c42c938c7823e61dcaf2eab47b27f5ed1e9fb76b2afe2023e"
+            ],
+            "index": "pypi",
+            "version": "==1.2.3"
         },
         "python-telegram-bot": {
             "hashes": [
@@ -146,14 +153,6 @@
             ],
             "version": "==2.3"
         },
-        "fabric": {
-            "hashes": [
-                "sha256:f4b7518552aeb934b2b170aaa854403dc05118dcaaf9ae30ae62fad6e989206c",
-                "sha256:fcaa8c46cc6c0dabad88ae424ddff86ea9bd1bc6eab6752a0222068228d8d617"
-            ],
-            "index": "pypi",
-            "version": "==2.2.1"
-        },
         "fabric3": {
             "hashes": [
                 "sha256:647e485ec83f30b587862f92374d6affc217f3d79819d1d7f512e42e7ae51e81",
@@ -176,14 +175,6 @@
                 "sha256:684a38a6f903c1d71d6d5fac066b58d7768af4de2b832e426ec79c30daa94a16"
             ],
             "version": "==2.7"
-        },
-        "invoke": {
-            "hashes": [
-                "sha256:1db6cf918e5df10efe4d61101b19763abe1510b6b2fe8c553daba25476de8044",
-                "sha256:265eead8c89805a2ac5083200842db6da7636ac63fb4fe0d1121b930770f3e2a",
-                "sha256:3e8e2c2e69493227e210a1d19ccc7c44189240385dda4c9b8eb5d98fa0f68a3e"
-            ],
-            "version": "==1.1.0"
         },
         "mccabe": {
             "hashes": [
@@ -261,6 +252,13 @@
                 "sha256:fabf73d5d0286f9e078774f3435601d2735c94ce9e514ac4fb945701edead7e4"
             ],
             "version": "==1.2.1"
+        },
+        "rope": {
+            "hashes": [
+                "sha256:a09edfd2034fd50099a67822f9bd851fbd0f4e98d3b87519f6267b60e50d80d1"
+            ],
+            "index": "pypi",
+            "version": "==0.10.7"
         },
         "six": {
             "hashes": [

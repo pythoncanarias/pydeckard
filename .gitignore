@@ -4,3 +4,5 @@ myconfig.py
 virtualenv
 .idea
 .vscode
+.DS_Store
+.env

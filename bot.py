@@ -4,7 +4,6 @@ import re
 import telegram
 from telegram.ext import Updater, Filters, MessageHandler
 from telegram import Bot, Update
-from myconfig import TELEGRAM_BOT_TOKEN
 from utils import is_bot
 
 
@@ -46,7 +45,7 @@ def reply(bot, update):
                 )
 
 
-updater = Updater(TELEGRAM_BOT_TOKEN)
+updater = Updater(config.TELEGRAM_BOT_TOKEN)
 dp = updater.dispatcher
 
 dp.add_handler(MessageHandler(Filters.status_update.new_chat_members, welcome))
