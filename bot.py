@@ -16,6 +16,7 @@ def welcome(bot: Bot, update: Update):
               "-> It could be kindly removed 🗑"
     else:
         if is_bot(new_member):
+            bot.delete_message(update.message.chat_id, update.message.message_id)
             if bot.kick_chat_member(update.message.chat_id, new_member.id):
                 msg = (f"*{new_member.username}* has been banned because I "
                        "considered it was a bot. ")
