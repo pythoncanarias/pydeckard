@@ -26,3 +26,10 @@ Now you can launch the bot with:
 ~~~console
 $ python bot.py
 ~~~
+
+## Tests
+
+~~~console
+$ pipenv install --dev
+$ pytest
+~~~
