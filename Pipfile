@@ -11,6 +11,7 @@ prettyconf = "*"
 "flake8" = "*"
 "fabric3" = "*"
 rope = "*"
+pytest = "*"
 
 [requires]
 python_version = "3.6"
