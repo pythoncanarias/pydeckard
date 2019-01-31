@@ -92,5 +92,17 @@ def test_is_bot_real_sample():
     assert utils.is_bot(user)
 
 
+# Testing is_tgmember_sect
+
+def test_is_tgmember_sect():
+    assert utils.is_tgmember_sect('tgMember.com +989216973112')
+
+
+def test_is_tgmember_sect_real():
+    user1 = Mock(first_name='tgMember.com +989216973112')
+    user2 = Mock(first_name='Random String tgmember.com')
+    assert utils.is_bot(user1) and utils.is_bot(user2)
+
+
 if __name__ == '__main__':
     pytest.main()
