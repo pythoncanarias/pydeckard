@@ -29,6 +29,10 @@ def is_valid_name(user: User):
     return len(user.first_name) <= config.MAXLEN_FOR_USERNAME_TO_TREAT_AS_HUMAN
 
 
+def is_tgmember_sect(first_name: str):
+    return "tgmember.com" in first_name.lower()
+
+
 def is_bot(user: User):
     """
     Returns True if a new user is a bot. So far only the length of the
@@ -44,6 +48,5 @@ def is_bot(user: User):
     return any((
         not is_valid_name(user),
         too_much_chinesse_chars(user.first_name),
+        is_tgmember_sect(user.first_name),
         ))
-
-
