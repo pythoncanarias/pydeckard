@@ -2,9 +2,9 @@ from telegram import User
 import config
 
 
-def is_chinesse(c):
+def is_chinese(c):
     """
-    Returns True if the character passed as parameter is a Chinesse
+    Returns True if the character passed as parameter is a Chinese
     one.
     """
     num = ord(c)
@@ -17,12 +17,12 @@ def is_chinesse(c):
         ))
 
 
-def too_much_chinesse_chars(s):
+def too_much_chinese_chars(s):
     letters = list(s)
-    num_chinesse_chars = sum([is_chinesse(c) for c in letters])
-    percent = num_chinesse_chars / len(letters)
-    return percent > config.CHINESSE_CHARS_MAX_PERCENT  # More than allowed
-                                                        # chars are chinesse
+    num_chinese_chars = sum([is_chinese(c) for c in letters])
+    percent = num_chinese_chars / len(letters)
+    return percent > config.CHINESE_CHARS_MAX_PERCENT  # More than allowed
+                                                        # chars are Chinese
 
 
 def is_valid_name(user: User):
@@ -47,6 +47,6 @@ def is_bot(user: User):
     # Add all the checks that you consider necessary
     return any((
         not is_valid_name(user),
-        too_much_chinesse_chars(user.first_name),
+        too_much_chinese_chars(user.first_name),
         is_tgmember_sect(user.first_name),
         ))

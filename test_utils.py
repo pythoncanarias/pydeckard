@@ -3,38 +3,38 @@ import pytest
 import utils
 
 
-# testing is_chinesse
+# testing is_chinese
 
 
 def test_all_chars_under_255_must_pass():
     for _ in range(32, 256):
         c = chr(_)
-        assert utils.is_chinesse(c) is False
+        assert utils.is_chinese(c) is False
 
 
 def test_spanish():
     for c in 'áéíóúüñçÁÉÍÓÚÜÑÇ':
-        assert utils.is_chinesse(c) is False
+        assert utils.is_chinese(c) is False
 
 
 def test_french():
     for c in 'áàâéèêëîïóöúûæÆoOçÇ':
-        assert utils.is_chinesse(c) is False
+        assert utils.is_chinese(c) is False
 
 
 def test_german():
     for c in 'äüößÄÖÜẞ':
-        assert utils.is_chinesse(c) is False
+        assert utils.is_chinese(c) is False
 
 
-def test_chinesse_chars():
+def test_chinese_chars():
     sample = '同号电报社群增粉仅毛量大价优可指定群指定筛选条件及速度提'  \
         '供明细报表群发私发社区运营成品账号欢迎项目方交易所洽谈合作'  \
         '诚招全球代理'
     for c in sample:
-        assert utils.is_chinesse(c) is True
+        assert utils.is_chinese(c) is True
 
-# testing too_much_chinesse_letters
+# testing too_much_chinese_letters
 
 _VALID_NAMES = [
     'Miguel de Cervantes',
@@ -55,7 +55,7 @@ def valid_name(request):
     return request.param
 
 def test_names_valid(valid_name):
-    assert utils.too_much_chinesse_chars(valid_name) is False
+    assert utils.too_much_chinese_chars(valid_name) is False
 
 
 _INVALID_NAMES = [
@@ -71,7 +71,7 @@ def invalid_name(request):
     return request.param
 
 def test_names_invalid(invalid_name):
-    assert utils.too_much_chinesse_chars(invalid_name)
+    assert utils.too_much_chinese_chars(invalid_name)
 
 
 # testing is_bot
