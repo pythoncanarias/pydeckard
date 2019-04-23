@@ -1,11 +1,16 @@
+import functools
+import random
+import re
+import typing
+from typing import Tuple
+
 from telegram import User
 import config
 
 
 def is_chinese(c):
     """
-    Returns True if the character passed as parameter is a Chinese
-    one.
+    Returns True if the character passed as parameter is a Chinese one
     """
     num = ord(c)
     return any((
@@ -50,3 +55,36 @@ def is_bot(user: User):
         too_much_chinese_chars(user.first_name),
         is_tgmember_sect(user.first_name),
         ))
+
+
+@functools.lru_cache()
+def get_reply_regex(trigger_words: Tuple[str]):
+    """
+    Build a regex to match on the trigger words
+    """
+    pattern = "|".join([fr"\b{word}\b" for word in trigger_words])
+    return re.compile(pattern, re.I)
+
+
+def bot_wants_to_reply() -> bool:
+    return random.random() < config.VERBOSITY
+
+
+class BotReplySpec(typing.NamedTuple):
+    message: str
+    trigger: str
+    reply: str
+
+
+def triggers_reply(message: str) -> typing.Optional[BotReplySpec]:
+    for trigger_words, bot_reply in config.REPLIES.items():
+        regex = get_reply_regex(trigger_words)
+        match = regex.search(message)
+        if match is not None and bot_wants_to_reply():
+            # When a match is found, check if the bot will reply based on its
+            # reply likelihood
+            if not isinstance(bot_reply, str):
+                # If value is a list then pick random string from multiple values:
+                bot_reply = random.choice(bot_reply)
+            return BotReplySpec(message, match.group(0), bot_reply)
+    return None
