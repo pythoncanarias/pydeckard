@@ -33,7 +33,7 @@ def welcome(bot: Bot, update: Update):
 
 def reply(bot, update):
     msg = update.message.text
-    for key, value in config.REPLY.items():
+    for key, value in config.REPLIES.items():
         regex = "|".join([fr"\b{x}\b" for x in key])
         if re.search(regex, msg, re.I):
             if random.random() < config.VERBOSITY:

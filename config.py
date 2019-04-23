@@ -5,10 +5,30 @@ TELEGRAM_BOT_TOKEN = config(
     default="put here the token of your bot"
 )
 
-# bot verbosity (0 ... 1)
-VERBOSITY = 0.33
 
-PYZEN = [
+# How likely is the bot to be triggered by one of the patterns it recognises.
+# - Allowed values: A float from 0 to 1 (0 will disable bot replies)
+VERBOSITY = config("BOT_VERBOSITY", float, default=0.33)
+
+
+# A username longer than this will be considered non-human
+# - Allowed values: An integer larger than 1
+MAX_HUMAN_USERNAME_LENGTH = config('MAX_HUMAN_USERNAME_LENGTH', int, default=100)
+
+
+# We have found, through empiric evidence, that a large ration of Chinese characters
+# usually indicates the user is a spammer or bot.
+# This sets the maximum allowed percent of Chinese characters before considering the
+# user a bot.
+# - Allowed values: A float from 0 to 1
+MAX_CHINESE_CHARS_PERCENT = config('MAX_CHINESE_CHARS_PERCENT', float, default=0.15)
+
+
+def bot_replies_enabled() -> bool:
+    return VERBOSITY > 0
+
+
+THE_ZEN_OF_PYTHON = [
     "Beautiful is better than ugly.",
     "Explicit is better than implicit.",
     "Simple is better than complex.",
@@ -30,7 +50,8 @@ PYZEN = [
     "Namespaces are one honking great idea -- let's do more of those!"
     ]
 
-REPLY = {
+
+REPLIES = {
     ("java",): "BIBA JABA!! ☕️",
     ("cobol",): "BIBA KOBOL!! 💾",
     ("javascript",): "BIBA JABAESKRIPT!! 🔮",
@@ -40,9 +61,6 @@ REPLY = {
         "más allá de Orión. He visto Rayos-C brillar en la oscuridad cerca de "
         "la puerta de Tannhäuser. Todos esos momentos se perderán en el "
         "tiempo... como lágrimas en la lluvia. Es hora de morir. 🔫",
-    ("python", "pitón", "piton"): PYZEN,
+    ("python", "pitón", "piton"): THE_ZEN_OF_PYTHON,
 }
 
-MAXLEN_FOR_USERNAME_TO_TREAT_AS_HUMAN = 100
-
-CHINESE_CHARS_MAX_PERCENT = 0.15
