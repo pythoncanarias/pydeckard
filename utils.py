@@ -21,12 +21,12 @@ def too_much_chinese_chars(s):
     letters = list(s)
     num_chinese_chars = sum([is_chinese(c) for c in letters])
     percent = num_chinese_chars / len(letters)
-    return percent > config.CHINESE_CHARS_MAX_PERCENT  # More than allowed
-                                                        # chars are Chinese
+    return percent > config.MAX_CHINESE_CHARS_PERCENT  # More than allowed
+                                                       # chars are Chinese
 
 
 def is_valid_name(user: User):
-    return len(user.first_name) <= config.MAXLEN_FOR_USERNAME_TO_TREAT_AS_HUMAN
+    return len(user.first_name) <= config.MAX_HUMAN_USERNAME_LENGTH
 
 
 def is_tgmember_sect(first_name: str):
