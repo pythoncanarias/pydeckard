@@ -1,10 +1,9 @@
-import random
-import config
-import re
 import telegram
 from telegram.ext import Updater, Filters, MessageHandler
 from telegram import Bot, Update
-from utils import is_bot
+
+import config
+import utils
 
 
 def welcome(bot: Bot, update: Update):
@@ -15,7 +14,7 @@ def welcome(bot: Bot, update: Update):
         msg = f"{new_member.name} is a *bot*!! " \
               "-> It could be kindly removed 🗑"
     else:
-        if is_bot(new_member):
+        if utils.is_bot(new_member):
             bot.delete_message(update.message.chat_id, update.message.message_id)
             if bot.kick_chat_member(update.message.chat_id, new_member.id):
                 msg = (f"*{new_member.username}* has been banned because I "
@@ -32,19 +31,16 @@ def welcome(bot: Bot, update: Update):
 
 
 def reply(bot, update):
+    if not config.bot_replies_enabled():
+        return
+
     msg = update.message.text
-    for key, value in config.REPLIES.items():
-        regex = "|".join([fr"\b{x}\b" for x in key])
-        if re.search(regex, msg, re.I):
-            if random.random() < config.VERBOSITY:
-                if not isinstance(value, str):
-                    # if value is a list
-                    # then pick random string from multiple values
-                    value = random.choice(value)
-                bot.send_message(
-                    chat_id=update.message.chat_id,
-                    text=value
-                )
+    reply_spec = utils.triggers_reply(msg)
+    if reply_spec is not None:
+        bot.send_message(
+            chat_id=update.message.chat_id,
+            text=reply_spec.reply
+        )
 
 
 updater = Updater(config.TELEGRAM_BOT_TOKEN)
