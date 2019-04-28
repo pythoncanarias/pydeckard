@@ -7,8 +7,8 @@ import utils
 
 @pytest.mark.parametrize('char_num', range(32, 256))
 def test_all_chars_under_255_must_pass(char_num):
-        char = chr(char_num)
-        assert not utils.is_chinese(char)
+    char = chr(char_num)
+    assert not utils.is_chinese(char)
 
 
 @pytest.mark.parametrize('spanish_char', 'áéíóúüñçÁÉÍÓÚÜÑÇ')
@@ -78,11 +78,12 @@ def test_is_not_bot():
 
 
 def test_is_bot_real_sample():
-    name = ('[VX.QQ同号253239090]电报社群增粉仅1毛,量大价优,可指定群指定筛选条件'
-            '及速度,提供明细报表[群发私发][社区运营][成品账号]欢迎项目方交易所洽'
-            '谈合作,诚招全球代理 ALL MARKET BEST PRICE FOR WORLDWIDE REAL n ACTIVE'
-            ' TELEGRAM GROUP(CHANNEL) HUMAN MEMBERS,QUALITY AND QUANTITY'
-            ' GUARANTEED[Telegram:marvelwork/Email:smartelegram at outlook.com]')
+    name = (
+        '[VX.QQ同号253239090]电报社群增粉仅1毛,量大价优,可指定群指定筛选条件'
+        '及速度,提供明细报表[群发私发][社区运营][成品账号]欢迎项目方交易所洽'
+        '谈合作,诚招全球代理 ALL MARKET BEST PRICE FOR WORLDWIDE REAL n ACTIVE'
+        ' TELEGRAM GROUP(CHANNEL) HUMAN MEMBERS,QUALITY AND QUANTITY'
+        ' GUARANTEED[Telegram:marvelwork/Email:smartelegram at outlook.com]')
     user = Mock(first_name=name)
     assert utils.is_bot(user)
 

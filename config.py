@@ -13,15 +13,19 @@ VERBOSITY = config("BOT_VERBOSITY", float, default=0.33)
 
 # A username longer than this will be considered non-human
 # - Allowed values: An integer larger than 1
-MAX_HUMAN_USERNAME_LENGTH = config('MAX_HUMAN_USERNAME_LENGTH', int, default=100)
+MAX_HUMAN_USERNAME_LENGTH = config('MAX_HUMAN_USERNAME_LENGTH',
+                                   int,
+                                   default=100)
 
 
-# We have found, through empiric evidence, that a large ration of Chinese characters
-# usually indicates the user is a spammer or bot.
-# This sets the maximum allowed percent of Chinese characters before considering the
-# user a bot.
+# We have found, through empiric evidence, that a large ration of Chinese
+# characters # usually indicates the user is a spammer or bot.
+# This sets the maximum allowed percent of Chinese characters before
+# considering the # user a bot.
 # - Allowed values: A float from 0 to 1
-MAX_CHINESE_CHARS_PERCENT = config('MAX_CHINESE_CHARS_PERCENT', float, default=0.15)
+MAX_CHINESE_CHARS_PERCENT = config('MAX_CHINESE_CHARS_PERCENT',
+                                   float,
+                                   default=0.15)
 
 
 def bot_replies_enabled() -> bool:

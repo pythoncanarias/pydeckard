@@ -26,8 +26,8 @@ def too_much_chinese_chars(s):
     letters = list(s)
     num_chinese_chars = sum([is_chinese(c) for c in letters])
     percent = num_chinese_chars / len(letters)
-    return percent > config.MAX_CHINESE_CHARS_PERCENT  # More than allowed
-                                                       # chars are Chinese
+    # More than allowed chars are Chinese
+    return percent > config.MAX_CHINESE_CHARS_PERCENT
 
 
 def is_valid_name(user: User):
@@ -84,7 +84,8 @@ def triggers_reply(message: str) -> typing.Optional[BotReplySpec]:
             # When a match is found, check if the bot will reply based on its
             # reply likelihood
             if not isinstance(bot_reply, str):
-                # If value is a list then pick random string from multiple values:
+                # If value is a list then pick random string from
+                # multiple values:
                 bot_reply = random.choice(bot_reply)
             return BotReplySpec(message, match.group(0), bot_reply)
     return None
