@@ -19,9 +19,9 @@ MAX_HUMAN_USERNAME_LENGTH = config('MAX_HUMAN_USERNAME_LENGTH',
 
 
 # We have found, through empiric evidence, that a large ration of Chinese
-# characters # usually indicates the user is a spammer or bot.
+# characters usually indicates the user is a spammer or bot.
 # This sets the maximum allowed percent of Chinese characters before
-# considering the # user a bot.
+# considering the user a bot.
 # - Allowed values: A float from 0 to 1
 MAX_CHINESE_CHARS_PERCENT = config('MAX_CHINESE_CHARS_PERCENT',
                                    float,
