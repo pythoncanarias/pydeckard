@@ -1,5 +1,8 @@
+import logging
+import datetime
+
 import telegram
-from telegram.ext import Updater, Filters, MessageHandler
+from telegram.ext import Updater, Filters, MessageHandler, CommandHandler
 from telegram import Bot, Update
 
 import config
@@ -44,11 +47,43 @@ def reply(bot, update):
         )
 
 
-updater = Updater(config.TELEGRAM_BOT_TOKEN)
-dp = updater.dispatcher
+def since(reference=datetime.datetime.now()):
+    now = datetime.datetime.now()
+    delta = now - reference
+    buff = []
+    if delta.days:
+        buff.append('{} días'.format(delta.days))
+    hours = delta.seconds // 3600
+    if hours > 0:
+        buff.append('{} horas'.format(hours))
+    minutes = delta.seconds // 60
+    if minutes > 0:
+        buff.append('{} minutos'.format(minutes))
+    seconds = delta.seconds % 60
+    buff.append('{} segundos'.format(seconds))
+    return ' '.join(buff)
 
-dp.add_handler(MessageHandler(Filters.status_update.new_chat_members, welcome))
-dp.add_handler(MessageHandler(Filters.group, reply))
 
-updater.start_polling()
-updater.idle()
+def status(bot, update):
+    bot.send_message(
+        chat_id=update.message.chat_id,
+        text='Status is OK, running since {}'.format(since())
+    )
+
+
+def main():
+    logging.basicConfig(level=logging.INFO)
+    logging.info('Starting bot...')
+    updater = Updater(config.TELEGRAM_BOT_TOKEN)
+    dp = updater.dispatcher
+
+    dp.add_handler(MessageHandler(Filters.status_update.new_chat_members, welcome))
+    dp.add_handler(MessageHandler(Filters.group, reply))
+    dp.add_handler(CommandHandler('status', status))
+
+    updater.start_polling()
+    updater.idle()
+
+
+if __name__ == "__main__":
+    main()
