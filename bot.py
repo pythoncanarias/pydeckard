@@ -52,15 +52,15 @@ def since(reference=datetime.datetime.now()):
     delta = now - reference
     buff = []
     if delta.days:
-        buff.append('{} días'.format(delta.days))
+        buff.append('{} days'.format(delta.days))
     hours = delta.seconds // 3600
     if hours > 0:
-        buff.append('{} horas'.format(hours))
+        buff.append('{} hours'.format(hours))
     minutes = delta.seconds // 60
     if minutes > 0:
-        buff.append('{} minutos'.format(minutes))
+        buff.append('{} minutes'.format(minutes))
     seconds = delta.seconds % 60
-    buff.append('{} segundos'.format(seconds))
+    buff.append('{} seconds'.format(seconds))
     return ' '.join(buff)
 
 
