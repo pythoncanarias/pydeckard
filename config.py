@@ -5,11 +5,19 @@ TELEGRAM_BOT_TOKEN = config(
     default="put here the token of your bot"
 )
 
-
 # How likely is the bot to be triggered by one of the patterns it recognises.
 # - Allowed values: A float from 0 to 1 (0 will disable bot replies)
 VERBOSITY = config("BOT_VERBOSITY", float, default=0.33)
 
+
+# Log level, default is WARNING
+LOG_LEVEL = config('LOG_LEVEL', default='WARNING')
+
+# Poll interval for telegram API request, default is 3 seconds
+POLL_INTERVAL = config('POLL_INTERVAL', int, default=3)
+
+# Bot message for start command
+BOT_GREETING = "Hi! I'm a friendly, ligthly psychopath robot"
 
 # A username longer than this will be considered non-human
 # - Allowed values: An integer larger than 1
