@@ -5,6 +5,7 @@ TELEGRAM_BOT_TOKEN = config(
     default="put here the token of your bot"
 )
 
+LOG_LEVEL = config('LOG_LEVEL', default='WARNING')
 
 # How likely is the bot to be triggered by one of the patterns it recognises.
 # - Allowed values: A float from 0 to 1 (0 will disable bot replies)
