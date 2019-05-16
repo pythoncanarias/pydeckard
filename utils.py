@@ -14,13 +14,15 @@ def is_chinese(c):
     Returns True if the character passed as parameter is a Chinese one
     """
     num = ord(c)
-    return any((
-        0x2E80 <= num <= 0x2FD5,
-        0x3190 <= num <= 0x319F,
-        0x3400 <= num <= 0x4DBF,
-        0x4E00 <= num <= 0x9FCC,
-        0x6300 <= num <= 0x77FF,
-        ))
+    return any(
+        (
+            0x2E80 <= num <= 0x2FD5,
+            0x3190 <= num <= 0x319F,
+            0x3400 <= num <= 0x4DBF,
+            0x4E00 <= num <= 0x9FCC,
+            0x6300 <= num <= 0x77FF,
+        )
+    )
 
 
 def too_much_chinese_chars(s):
@@ -51,11 +53,13 @@ def is_bot(user: User):
     :rtype: bool
     """
     # Add all the checks that you consider necessary
-    return any((
-        not is_valid_name(user),
-        too_much_chinese_chars(user.first_name),
-        is_tgmember_sect(user.first_name),
-        ))
+    return any(
+        (
+            not is_valid_name(user),
+            too_much_chinese_chars(user.first_name),
+            is_tgmember_sect(user.first_name),
+        )
+    )
 
 
 @functools.lru_cache()
@@ -111,15 +115,15 @@ def since(dt=None, reference=datetime.datetime.now()) -> str:
     buff = []
     days = delta.days
     if days:
-        buff.append(f'{days} day' if days == 1 else f'{days} days')
+        buff.append(f"{days} day" if days == 1 else f"{days} days")
     seconds = delta.seconds
     if seconds > 3600:
         hours = seconds // 3600
-        buff.append(f'{hours} hour' if hours == 1 else f'{hours} hours')
+        buff.append(f"{hours} hour" if hours == 1 else f"{hours} hours")
         seconds = seconds % 3600
     minutes = seconds // 60
     if minutes > 0:
-        buff.append(f'{minutes} minute' if minutes == 1 else f'{minutes} minutes')
+        buff.append(f"{minutes} minute" if minutes == 1 else f"{minutes} minutes")
     seconds = seconds % 60
-    buff.append(f'{seconds} second' if seconds == 1 else f'{seconds} seconds')
-    return ' '.join(buff)
+    buff.append(f"{seconds} second" if seconds == 1 else f"{seconds} seconds")
+    return " ".join(buff)
