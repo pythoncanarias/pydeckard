@@ -1,4 +1,5 @@
 import functools
+import datetime
 import random
 import re
 import typing
@@ -89,3 +90,36 @@ def triggers_reply(message: str) -> typing.Optional[BotReplySpec]:
                 bot_reply = random.choice(bot_reply)
             return BotReplySpec(message, match.group(0), bot_reply)
     return None
+
+
+def since(dt=None, reference=datetime.datetime.now()) -> str:
+    """Returns a textual description of time passed.
+
+    Parameters:
+
+     - dt: datetime is the date to calculate the difference from
+           reference. If not used, take the value from the current
+           datetime.
+
+     - reference: datetime is the datetime used to get the difference
+        ir delta. If not defined, default value is since the definition
+        of the function, this is,since the moment the current run of the
+        program started.
+    """
+    dt = dt or datetime.datetime.now()
+    delta = dt - reference
+    buff = []
+    days = delta.days
+    if days:
+        buff.append(f'{days} day' if days == 1 else f'{days} days')
+    seconds = delta.seconds
+    if seconds > 3600:
+        hours = seconds // 3600
+        buff.append(f'{hours} hour' if hours == 1 else f'{hours} hours')
+        seconds = seconds % 3600
+    minutes = seconds // 60
+    if minutes > 0:
+        buff.append(f'{minutes} minute' if minutes == 1 else f'{minutes} minutes')
+    seconds = seconds % 60
+    buff.append(f'{seconds} second' if seconds == 1 else f'{seconds} seconds')
+    return ' '.join(buff)
