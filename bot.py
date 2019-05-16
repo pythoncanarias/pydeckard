@@ -9,20 +9,27 @@ import config
 import utils
 
 
-def get_logger(name=__name__):
-    if get_logger.logger is None:
-        logging.basicConfig(
-            format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-            level=config.LOG_LEVEL,
-            )
-        get_logger.logger = logging.getLogger(name)
-    return get_logger.logger
+logger = logging.getLogger('bot')
 
-get_logger.logger = None
+
+def start(bot, update):
+    logger.info('Received command /start')
+    bot.send_message(chat_id=update.message.chat_id, text=config.BOT_GREETING)
+
+
+def help(bot, update):
+    logger.info('Received command /help')
+    bot.send_message(
+        chat_id=update.message.chat_id,
+        text="Available commands:\n"
+        " - /start - start intereaction with the bot\n"
+        " - /help - Show commands\n"
+        " - /status - Show status and alive time\n"
+        )
 
 
 def welcome(bot: Bot, update: Update):
-    logger = get_logger()
+    logger.info('Received new user event')
     new_member = update.message.new_chat_members[0]
     logger.info(f'send welcome message for {new_member.name}')
     msg = None
@@ -49,7 +56,6 @@ def welcome(bot: Bot, update: Update):
 
 
 def reply(bot, update):
-    logger = get_logger()
     if not config.bot_replies_enabled():
         return
 
@@ -63,46 +69,36 @@ def reply(bot, update):
         )
 
 
-def since(reference=datetime.datetime.now()):
-    now = datetime.datetime.now()
-    delta = now - reference
-    buff = []
-    if delta.days:
-        buff.append('{} days'.format(delta.days))
-    hours = delta.seconds // 3600
-    if hours > 0:
-        buff.append('{} hours'.format(hours))
-    minutes = delta.seconds // 60
-    if minutes > 0:
-        buff.append('{} minutes'.format(minutes))
-    seconds = delta.seconds % 60
-    buff.append('{} seconds'.format(seconds))
-    return ' '.join(buff)
-
-
 def status(bot, update):
-    logger = get_logger()
-    logger.info('bot asked to execute status commamd')
+    logger.info('bot asked to execute /status commamd')
     bot.send_message(
         chat_id=update.message.chat_id,
-        text='Status is OK, running since {}'.format(since())
+        text='Status is OK, running since {}'.format(utils.since())
     )
 
 
 def main():
-    logger = get_logger()
+    logging.basicConfig(
+        level=config.LOG_LEVEL,
+        format='%(asctime)s [%(name)s] %(levelname)s: %(message)s',
+        )
     logger.info('Starting bot...')
+    logger.info(f'- Log level is {config.LOG_LEVEL}')
+    logger.info(f'- Poll interval is {config.POLL_INTERVAL}')
     updater = Updater(config.TELEGRAM_BOT_TOKEN)
     dp = updater.dispatcher
 
+    dp.add_handler(CommandHandler('start', start))
+    dp.add_handler(CommandHandler('help', help))
+    dp.add_handler(CommandHandler('status', status))
     dp.add_handler(MessageHandler(Filters.status_update.new_chat_members, welcome))
     dp.add_handler(MessageHandler(Filters.group, reply))
-    dp.add_handler(CommandHandler('status', status))
 
     logger.info('Bot is ready')
-    updater.start_polling()
+    updater.start_polling(poll_interval=config.POLL_INTERVAL)
     updater.idle()
 
 
 if __name__ == "__main__":
     main()
+
