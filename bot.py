@@ -73,7 +73,7 @@ def status(bot, update):
     logger.info('bot asked to execute /status commamd')
     bot.send_message(
         chat_id=update.message.chat_id,
-        text='Status is OK, running since {}'.format(utils.since())
+        text=f'Status is OK, running since {utils.since()}',
     )
 
 
@@ -97,8 +97,3 @@ def main():
     logger.info('Bot is ready')
     updater.start_polling(poll_interval=config.POLL_INTERVAL)
     updater.idle()
-
-
-if __name__ == "__main__":
-    main()
-
