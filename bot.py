@@ -12,12 +12,12 @@ import utils
 logger = logging.getLogger('bot')
 
 
-def start(bot, update):
+def command_start(bot, update):
     logger.info('Received command /start')
     bot.send_message(chat_id=update.message.chat_id, text=config.BOT_GREETING)
 
 
-def help(bot, update):
+def command_help(bot, update):
     logger.info('Received command /help')
     bot.send_message(
         chat_id=update.message.chat_id,
@@ -26,6 +26,14 @@ def help(bot, update):
         " - /help - Show commands\n"
         " - /status - Show status and alive time\n"
         )
+
+
+def command_status(bot, update):
+    logger.info('bot asked to execute /status commamd')
+    bot.send_message(
+        chat_id=update.message.chat_id,
+        text=f'Status is OK, running since {utils.since()}',
+    )
 
 
 def welcome(bot: Bot, update: Update):
@@ -69,14 +77,6 @@ def reply(bot, update):
         )
 
 
-def status(bot, update):
-    logger.info('bot asked to execute /status commamd')
-    bot.send_message(
-        chat_id=update.message.chat_id,
-        text=f'Status is OK, running since {utils.since()}',
-    )
-
-
 def main():
     logging.basicConfig(
         level=config.LOG_LEVEL,
@@ -88,9 +88,9 @@ def main():
     updater = Updater(config.TELEGRAM_BOT_TOKEN)
     dp = updater.dispatcher
 
-    dp.add_handler(CommandHandler('start', start))
-    dp.add_handler(CommandHandler('help', help))
-    dp.add_handler(CommandHandler('status', status))
+    dp.add_handler(CommandHandler('start', command_start))
+    dp.add_handler(CommandHandler('help', command_help))
+    dp.add_handler(CommandHandler('status', command_status))
     dp.add_handler(MessageHandler(Filters.status_update.new_chat_members, welcome))
     dp.add_handler(MessageHandler(Filters.group, reply))
 
