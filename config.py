@@ -72,3 +72,5 @@ REPLIES = {
 MAXLEN_FOR_USERNAME_TO_TREAT_AS_HUMAN = 100
 
 CHINESE_CHARS_MAX_PERCENT = 0.15
+
+BOT_GREETING = "Hi! I'm a friendly, ligthty psychopath robot."
