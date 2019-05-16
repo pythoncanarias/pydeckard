@@ -97,3 +97,7 @@ def main():
     logger.info('Bot is ready')
     updater.start_polling(poll_interval=config.POLL_INTERVAL)
     updater.idle()
+
+
+if __name__ == "__main__":
+    main()
