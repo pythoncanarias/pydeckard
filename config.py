@@ -17,7 +17,7 @@ LOG_LEVEL = config('LOG_LEVEL', default='WARNING')
 POLL_INTERVAL = config('POLL_INTERVAL', int, default=3)
 
 # Bot message for start command
-BOT_GREETING = "Hi! I'm a friendly, ligthly psychopath robot"
+BOT_GREETING = "Hi! I'm a friendly, sligthly psychopath robot"
 
 # A username longer than this will be considered non-human
 # - Allowed values: An integer larger than 1
