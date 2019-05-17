@@ -6,6 +6,7 @@ name = "pypi"
 [packages]
 python-telegram-bot = "==11.1.0"
 prettyconf = "==2.0.1"
+pygithub = "*"
 
 [dev-packages]
 "flake8" = "*"
