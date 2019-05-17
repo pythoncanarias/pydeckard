@@ -83,8 +83,7 @@ def main():
         format='%(asctime)s [%(name)s] %(levelname)s: %(message)s',
         )
     logger.info('Starting bot...')
-    logger.info(f'- Log level is {config.LOG_LEVEL}')
-    logger.info(f'- Poll interval is {config.POLL_INTERVAL}')
+    config.log(logger.info)
     updater = Updater(config.TELEGRAM_BOT_TOKEN)
     dp = updater.dispatcher
 

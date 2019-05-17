@@ -1,8 +1,38 @@
-from prettyconf import config
+from typing import NamedTuple, Any
+
+from prettyconf import config as _config
+
+
+_config_registry = []
+
+class _ConfigItem(NamedTuple):
+    name: str
+    value: Any
+    suppress_log: bool = False
+
+    def log(self, logger_method, indent=False):
+        value = "***PRIVATE***" if self.suppress_log else self.value
+        indentation = '   ' if indent else ''
+        logger_method(f"{indentation}{self.name} = {value}")
+
+
+def config(item, cast=lambda v: v, suppress_log=False, **kwargs):
+    value = _config(item, cast, **kwargs)
+    global _config_registry
+    _config_registry.append(_ConfigItem(item, value, suppress_log))
+    return value
+
+
+def log(logger_method):
+    logger_method("Bot configuration:")
+    for config_item in _config_registry:
+        config_item.log(logger_method, indent=True)
+
 
 TELEGRAM_BOT_TOKEN = config(
     "TELEGRAM_BOT_TOKEN",
-    default="put here the token of your bot"
+    default="put here the token of your bot",
+    suppress_log=True
 )
 
 # How likely is the bot to be triggered by one of the patterns it recognises.
@@ -17,7 +47,7 @@ LOG_LEVEL = config('LOG_LEVEL', default='WARNING')
 POLL_INTERVAL = config('POLL_INTERVAL', int, default=3)
 
 # Bot message for start command
-BOT_GREETING = "Hi! I'm a friendly, sligthly psychopath robot"
+BOT_GREETING = config('BOT_GREETING', default="Hi! I'm a friendly, slightly psychopath robot")
 
 # A username longer than this will be considered non-human
 # - Allowed values: An integer larger than 1
