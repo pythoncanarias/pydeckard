@@ -55,6 +55,7 @@ MAX_HUMAN_USERNAME_LENGTH = config('MAX_HUMAN_USERNAME_LENGTH',
                                    int,
                                    default=100)
 
+DB_NAME = config('DB_NAME', default='pydeckard_db')
 
 # We have found, through empiric evidence, that a large ration of Chinese
 # characters usually indicates the user is a spammer or bot.
