@@ -14,17 +14,26 @@ logger = logging.getLogger('bot')
 
 def command_start(bot, update):
     logger.info('Received command /start')
-    bot.send_message(chat_id=update.message.chat_id, text=config.BOT_GREETING)
+    bot.send_message(
+        chat_id=update.message.chat_id,
+        text=config.BOT_GREETING,
+        parse_mode='Markdown',
+        )
 
 
 def command_help(bot, update):
     logger.info('Received command /help')
     bot.send_message(
         chat_id=update.message.chat_id,
-        text="Available commands:\n"
-        " - /start - start intereaction with the bot\n"
-        " - /help - Show commands\n"
-        " - /status - Show status and alive time\n"
+        text='\n'.join([
+            "Available commands:",
+            " - `/start` - start intereaction with the bot",
+            " - `/help` - Show commands",
+            " - `/status` - Show status and alive time",
+            " - `/settings` - Show current settings",
+            " - `/debug` - Show debug information for developers",
+            ]),
+        parse_mode='Markdown',
         )
 
 
@@ -32,8 +41,44 @@ def command_status(bot, update):
     logger.info('bot asked to execute /status commamd')
     bot.send_message(
         chat_id=update.message.chat_id,
-        text=f'Status is OK, running since {utils.since()}',
-    )
+        text=f'Status is **OK**, running since {utils.since()}',
+        parse_mode='Markdown',
+        )
+
+
+def command_settings(bot, update):
+    logger.info('Received command /settings')
+    chat = update.message.chat
+    if config.VERBOSITY < 1.0:
+        verbosity_level = f'{round(config.VERBOSITY*100.0, 2)}%'
+    else:
+        verbosity_level = 'Palicoso'
+    bot.send_message(
+        chat_id=update.message.chat_id,
+        text="\n".join([
+            f"Settings for {chat.title}:",
+            f" - Verbosity level: **{verbosity_level}**",
+            f" - Log level: **{config.LOG_LEVEL}**",
+            f" - Poll interval time (in seconds): **{config.POLL_INTERVAL}**",
+            f" - Repos (**0**)",
+            ]),
+        parse_mode='Markdown',
+        )
+
+
+def command_debug(bot, update):
+    logger.info('Received command /debug')
+    chat = update.message.chat
+    bot.send_message(
+        chat_id=update.message.chat_id,
+        text='\n'.join([
+            "Chat:",
+            " - id: {}".format(chat.id),
+            " - type: {}".format(chat.type),
+            " - title: {}".format(chat.title)
+            ]),
+        parse_mode='Markdown',
+        )
 
 
 def welcome(bot: Bot, update: Update):
@@ -73,7 +118,8 @@ def reply(bot, update):
         logger.info(f'bot sends reply {reply_spec.reply}')
         bot.send_message(
             chat_id=update.message.chat_id,
-            text=reply_spec.reply
+            text=reply_spec.reply,
+            parse_mode='Markdown',
         )
 
 
@@ -90,6 +136,8 @@ def main():
     dp.add_handler(CommandHandler('start', command_start))
     dp.add_handler(CommandHandler('help', command_help))
     dp.add_handler(CommandHandler('status', command_status))
+    dp.add_handler(CommandHandler('settings', command_settings))
+    dp.add_handler(CommandHandler('debug', command_debug))
     dp.add_handler(MessageHandler(Filters.status_update.new_chat_members, welcome))
     dp.add_handler(MessageHandler(Filters.group, reply))
 

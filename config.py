@@ -104,6 +104,11 @@ REPLIES = {
         "la puerta de Tannhäuser. Todos esos momentos se perderán en el "
         "tiempo... como lágrimas en la lluvia. Es hora de morir. 🔫",
     ("python", "pitón", "piton"): THE_ZEN_OF_PYTHON,
+    ("phyton",): [
+        "Se dice **Python**, simplón",
+        "s/phython/python/",
+        "_Phyton_ también decía mi abuela...",
+        ],
 }
 
 MAXLEN_FOR_USERNAME_TO_TREAT_AS_HUMAN = 100
