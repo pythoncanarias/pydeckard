@@ -7,18 +7,21 @@ from telegram import Bot, Update
 
 import config
 import utils
-
+import dba
 
 logger = logging.getLogger('bot')
 
 
 def command_start(bot, update):
     logger.info('Received command /start')
-    bot.send_message(
-        chat_id=update.message.chat_id,
-        text=config.BOT_GREETING,
-        parse_mode='Markdown',
-        )
+    chat = update.message.chat
+    is_new = dba.save_chat(chat.id, chat.type, chat.title)
+    if is_new:
+        bot.send_message(
+            chat_id=update.message.chat_id,
+            text=config.BOT_GREETING,
+            parse_mode='Markdown',
+            )
 
 
 def command_help(bot, update):
@@ -57,8 +60,9 @@ def command_settings(bot, update):
         chat_id=update.message.chat_id,
         text="\n".join([
             f"Settings for {chat.title}:",
-            f" - Verbosity level: **{verbosity_level}**",
-            f" - Log level: **{config.LOG_LEVEL}**",
+            f" - Database: `{config.DB_NAME}`",
+            f" - Verbosity level: `{verbosity_level}`",
+            f" - Log level: `{config.LOG_LEVEL}`",
             f" - Poll interval time (in seconds): **{config.POLL_INTERVAL}**",
             f" - Repos (**0**)",
             ]),
@@ -69,14 +73,20 @@ def command_settings(bot, update):
 def command_debug(bot, update):
     logger.info('Received command /debug')
     chat = update.message.chat
+    conn = dba.get_connection()
+    all_chats = dba.get_rows(conn, 'SELECT * FROM chat')
+    buff = [
+        "Chat:",
+        f" - id: {chat.id}",
+        f" - type: {chat.type}",
+        f" - title: {chat.title}",
+        f" - Chats: ({len(all_chats)})",
+    ]
+    for c in all_chats:
+        buff.append(f'    - {c.title}')
     bot.send_message(
         chat_id=update.message.chat_id,
-        text='\n'.join([
-            "Chat:",
-            " - id: {}".format(chat.id),
-            " - type: {}".format(chat.type),
-            " - title: {}".format(chat.title)
-            ]),
+        text='\n'.join(buff),
         parse_mode='Markdown',
         )
 
