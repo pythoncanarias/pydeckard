@@ -74,7 +74,7 @@ def command_debug(bot, update):
     logger.info('Received command /debug')
     chat = update.message.chat
     conn = dba.get_connection()
-    all_chats = dba.get_rows(conn, 'SELECT * FROM chat')
+    all_chats = dba.load_all_chats()
     buff = [
         "Chat:",
         f" - id: {chat.id}",

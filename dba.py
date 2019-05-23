@@ -1,10 +1,14 @@
 import os
+import logging
 
 import sqlite3
 from collections import OrderedDict
 from collections.abc import MutableMapping
 
 import config
+
+
+logger = logging.getLogger(__name__)
 
 
 class ObjectRow(sqlite3.Row):
@@ -62,32 +66,41 @@ def get_rows(conn, sql, *args, cast=None, limit=0):
         cur.close()
 
 
+def _exists_db(db_name):
+    return any([
+        db_name == ':memory:',
+        not os.path.exists(db_name),
+    ])
+
+
 CREATE_TABLE_CHAT = '''
     CREATE TABLE IF NOT EXISTS chat (
         id_chat long,
-        title text,
-        chat_type text
-        )
+        chat_type text,
+        title text
+        );
 '''
 
-def initialize_db(conn):
+
+def _initialize_db(conn):
+    logger.info('No database (first time running)')
     execute(conn, CREATE_TABLE_CHAT)
+    logger.info('Database initialized')
+
 
 _conn = None
 
 
-def get_connection():
+def get_connection(
+        ):
     global _conn
     if _conn is None:
         db_name = config.DB_NAME
-        first_time = any([
-            db_name == ':memory:',
-            not os.path.exists(db_name),
-            ])
+        first_time = _exists_db(db_name)
         _conn = sqlite3.connect(db_name)
         _conn.row_factory = ObjectRow
         if first_time:
-            initialize_db(_conn)
+            _initialize_db(_conn)
     return _conn
 
 
@@ -99,6 +112,7 @@ def execute(db, statement, *args):
         cur.close()
 
 
+# Highlevel functions (other module?)
 
 def save_chat(id_chat, chat_type, title):
     conn = get_connection()
@@ -107,4 +121,9 @@ def save_chat(id_chat, chat_type, title):
         sql = 'INSERT INTO chat (id_chat, chat_type, title) VALUES (?, ?, ?)'
         execute(conn, sql, id_chat, chat_type, title)
         return 1
+
+
+def load_all_chats():
+    conn = get_connection()
+    return get_rows(conn, 'SELECT * FROM chat')
 
