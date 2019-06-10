@@ -7,15 +7,21 @@ from telegram import Bot, Update
 
 import config
 import utils
-import dba
+
+from dba import connect
+from dba import save_chat
+from dba import load_all_chats
+
 
 logger = logging.getLogger('bot')
+
 
 
 def command_start(bot, update):
     logger.info('Received command /start')
     chat = update.message.chat
-    is_new = dba.save_chat(chat.id, chat.type, chat.title)
+    db = connect(config.DB_NAME)
+    is_new = save_chat(db, chat.id, chat.type, chat.title)
     if is_new:
         bot.send_message(
             chat_id=update.message.chat_id,
@@ -73,8 +79,8 @@ def command_settings(bot, update):
 def command_debug(bot, update):
     logger.info('Received command /debug')
     chat = update.message.chat
-    conn = dba.get_connection()
-    all_chats = dba.load_all_chats()
+    db = connect(config.DB_NAME)
+    all_chats = load_all_chats(db)
     buff = [
         "Chat:",
         f" - id: {chat.id}",
