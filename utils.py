@@ -2,8 +2,7 @@ import functools
 import datetime
 import random
 import re
-import typing
-from typing import Tuple
+from typing import Tuple, Optional, NamedTuple
 
 from telegram import User
 import config
@@ -75,13 +74,13 @@ def bot_wants_to_reply() -> bool:
     return random.random() < config.VERBOSITY
 
 
-class BotReplySpec(typing.NamedTuple):
+class BotReplySpec(NamedTuple):
     message: str
     trigger: str
     reply: str
 
 
-def triggers_reply(message: str) -> typing.Optional[BotReplySpec]:
+def triggers_reply(message: str) -> Optional[BotReplySpec]:
     for trigger_words, bot_reply in config.REPLIES.items():
         regex = get_reply_regex(trigger_words)
         match = regex.search(message)
@@ -94,6 +93,12 @@ def triggers_reply(message: str) -> typing.Optional[BotReplySpec]:
                 bot_reply = random.choice(bot_reply)
             return BotReplySpec(message, match.group(0), bot_reply)
     return None
+
+
+def pluralise(number: int, singular: str, plural: Optional[str] = None) -> str:
+    if plural is None:
+        plural = f"{singular}s"
+    return singular if number == 1 else plural
 
 
 def since(dt=None, reference=datetime.datetime.now()) -> str:
@@ -115,15 +120,15 @@ def since(dt=None, reference=datetime.datetime.now()) -> str:
     buff = []
     days = delta.days
     if days:
-        buff.append(f"{days} day" if days == 1 else f"{days} days")
+        buff.append(f"{days} {pluralise(days, 'day')}")
     seconds = delta.seconds
     if seconds > 3600:
         hours = seconds // 3600
-        buff.append(f"{hours} hour" if hours == 1 else f"{hours} hours")
+        buff.append(f"{hours} {pluralise(hours, 'hour')}")
         seconds = seconds % 3600
     minutes = seconds // 60
     if minutes > 0:
-        buff.append(f"{minutes} minute" if minutes == 1 else f"{minutes} minutes")
+        buff.append(f"{minutes} {pluralise(minutes, 'minute')}")
     seconds = seconds % 60
-    buff.append(f"{seconds} second" if seconds == 1 else f"{seconds} seconds")
+    buff.append(f"{seconds} {pluralise(seconds, 'second')}")
     return " ".join(buff)
