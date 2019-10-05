@@ -1,5 +1,4 @@
 import logging
-import datetime
 
 import telegram
 from telegram.ext import Updater, Filters, MessageHandler, CommandHandler
@@ -90,7 +89,8 @@ def main():
     dp.add_handler(CommandHandler('start', command_start))
     dp.add_handler(CommandHandler('help', command_help))
     dp.add_handler(CommandHandler('status', command_status))
-    dp.add_handler(MessageHandler(Filters.status_update.new_chat_members, welcome))
+    dp.add_handler(MessageHandler(Filters.status_update.new_chat_members,
+                                  welcome))
     dp.add_handler(MessageHandler(Filters.group, reply))
 
     logger.info('Bot is ready')
