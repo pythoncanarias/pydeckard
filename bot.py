@@ -76,7 +76,7 @@ def reply(update, context):
         return
 
     msg = update.message.text
-    reply_spec = utils.triggers_reply(msg)
+    reply_spec = utils.triggers_reply(msg) if msg else None
     if reply_spec is not None:
         logger.info(f'bot sends reply {reply_spec.reply}')
         context.bot.send_message(
