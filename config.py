@@ -68,6 +68,11 @@ MAX_CHINESE_CHARS_PERCENT = config('MAX_CHINESE_CHARS_PERCENT',
                                    default=0.15)
 
 
+# Delay (in seconds) to wait before sending welcome message. New users have
+# 5 minutes to solve a captcha. The default delay is 5 and a half minutes.
+WELCOME_DELAY = config('WELCOME_DELAY', int, default=330)
+
+
 def bot_replies_enabled() -> bool:
     return VERBOSITY > 0
 

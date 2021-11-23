@@ -1,4 +1,5 @@
 import logging
+from time import sleep
 
 import telegram
 from telegram.ext import Updater, Filters, MessageHandler, CommandHandler
@@ -38,6 +39,14 @@ def command_status(update, context):
 def welcome(update: Update, context):
     logger.info('Received new user event')
     new_member = update.message.new_chat_members[0]
+
+    logger.info(f'Waiting {config.WELCOME_DELAY} seconds until user completes captcha...')
+    sleep(config.WELCOME_DELAY)
+    membership_info = context.bot.get_chat_member(update.message.chat_id, new_member.id)
+    if membership_info['status'] == 'left':
+        logger.info(f'Skipping welcome message, user {new_member.name} is no longer in the chat')
+        return
+
     logger.info(f'send welcome message for {new_member.name}')
     msg = None
 
