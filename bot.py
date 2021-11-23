@@ -100,7 +100,7 @@ def main():
     dp.add_handler(CommandHandler('status', command_status))
     dp.add_handler(MessageHandler(Filters.status_update.new_chat_members,
                                   welcome, run_async=True))
-    dp.add_handler(MessageHandler(Filters.chat_type.group, reply))
+    dp.add_handler(MessageHandler(Filters.chat_type.groups, reply))
 
     logger.info('Bot is ready')
     updater.start_polling(poll_interval=config.POLL_INTERVAL)
