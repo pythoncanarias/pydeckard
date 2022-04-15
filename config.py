@@ -1,6 +1,7 @@
 from typing import NamedTuple, Any
 
-from prettyconf import config as _config
+from decouple import config as _config
+
 
 
 _config_registry = []
@@ -30,7 +31,7 @@ def log(logger_method):
         config_item.log(logger_method, indent=True)
 
 
-TELEGRAM_BOT_TOKEN = config(
+BOT_TOKEN = config(
     "TELEGRAM_BOT_TOKEN",
     default="put here the token of your bot",
     suppress_log=True
@@ -70,7 +71,7 @@ MAX_CHINESE_CHARS_PERCENT = config('MAX_CHINESE_CHARS_PERCENT',
 
 # Delay (in seconds) to wait before sending welcome message. New users have
 # 5 minutes to solve a captcha. The default delay is 5 and a half minutes.
-WELCOME_DELAY = config('WELCOME_DELAY', int, default=330)
+WELCOME_DELAY = config('WELCOME_DELAY', int, default=10)
 
 
 def bot_replies_enabled() -> bool:

@@ -92,7 +92,7 @@ def main():
         )
     logger.info('Starting bot...')
     config.log(logger.info)
-    updater = Updater(config.TELEGRAM_BOT_TOKEN)
+    updater = Updater(config.BOT_TOKEN)
     dp = updater.dispatcher
 
     dp.add_handler(CommandHandler('start', command_start))
