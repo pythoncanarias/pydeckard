@@ -1,5 +1,4 @@
 import logging
-from time import sleep
 
 import telegram
 from telegram.ext import Updater, Filters, MessageHandler, CommandHandler
@@ -7,6 +6,7 @@ from telegram import Update
 
 import settings
 import utils
+import scraper
 
 
 logger = logging.getLogger('bot')
@@ -43,11 +43,17 @@ def welcome(update: Update, context):
            "I am a friendly and polite *bot* 🤖"
 
     if msg:
+        msg = scraper.sample()
         context.bot.send_message(
             chat_id=update.message.chat_id,
             text=msg,
-            parse_mode=telegram.ParseMode.MARKDOWN
+            parse_mode=telegram.ParseMode.HTML
         )
+        # context.bot.send_message(
+        #     chat_id=update.message.chat_id,
+        #     text=msg,
+        #     parse_mode=telegram.ParseMode.MARKDOWN
+        # )
 
 
 def reply(update, context):
