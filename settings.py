@@ -8,7 +8,7 @@ def bot_replies_enabled() -> bool:
 
 
 BOT_TOKEN = config(
-    "TELEGRAM_BOT_TOKEN",
+    "BOT_TOKEN",
     default="put here the token of your bot")
 
 # How likely is the bot to be triggered by one of the patterns it recognises.
@@ -22,6 +22,9 @@ LOG_LEVEL = config('LOG_LEVEL', default='WARNING')
 
 POLL_INTERVAL = config('POLL_INTERVAL', cast=int, default=3)
 
+
+BOT_GREETING = config('BOT_GREETING',
+                      default="Hi! I'm a friendly, slightly psychopath robot")
 
 THE_ZEN_OF_PYTHON = [
     "Beautiful is better than ugly.",
