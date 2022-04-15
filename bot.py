@@ -70,7 +70,6 @@ def main():
         format='%(asctime)s [%(name)s] %(levelname)s: %(message)s',
         )
     logger.info('Starting bot...')
-    config.log(logger.info)
     updater = Updater(config.BOT_TOKEN)
     dp = updater.dispatcher
 

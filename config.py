@@ -1,34 +1,10 @@
 from typing import NamedTuple, Any
 
-from decouple import config as _config
+from decouple import config
 
 
-
-_config_registry = []
-
-
-class _ConfigItem(NamedTuple):
-    name: str
-    value: Any
-    suppress_log: bool = False
-
-    def log(self, logger_method, indent=False):
-        value = "***PRIVATE***" if self.suppress_log else self.value
-        indentation = '   ' if indent else ''
-        logger_method(f"{indentation}{self.name} = {value}")
-
-
-def config(item, cast=lambda v: v, suppress_log=False, **kwargs):
-    value = _config(item, cast, **kwargs)
-    global _config_registry
-    _config_registry.append(_ConfigItem(item, value, suppress_log))
-    return value
-
-
-def log(logger_method):
-    logger_method("Bot configuration:")
-    for config_item in _config_registry:
-        config_item.log(logger_method, indent=True)
+def bot_replies_enabled() -> bool:
+    return VERBOSITY > 0
 
 
 BOT_TOKEN = config(
@@ -39,43 +15,14 @@ BOT_TOKEN = config(
 
 # How likely is the bot to be triggered by one of the patterns it recognises.
 # - Allowed values: A float from 0 to 1 (0 will disable bot replies)
-VERBOSITY = config("BOT_VERBOSITY", float, default=0.33)
+VERBOSITY = config("BOT_VERBOSITY", cast=float, default=0.33)
 
 
 # Log level, default is WARNING
 LOG_LEVEL = config('LOG_LEVEL', default='WARNING')
 
-# Poll interval for telegram API request, default is 3 seconds
-POLL_INTERVAL = config('POLL_INTERVAL', int, default=3)
 
-# Bot message for start command
-BOT_GREETING = config('BOT_GREETING',
-                      default="Hi! I'm a friendly, slightly psychopath robot")
-
-# A username longer than this will be considered non-human
-# - Allowed values: An integer larger than 1
-MAX_HUMAN_USERNAME_LENGTH = config('MAX_HUMAN_USERNAME_LENGTH',
-                                   int,
-                                   default=100)
-
-
-# We have found, through empiric evidence, that a large ration of Chinese
-# characters usually indicates the user is a spammer or bot.
-# This sets the maximum allowed percent of Chinese characters before
-# considering the user a bot.
-# - Allowed values: A float from 0 to 1
-MAX_CHINESE_CHARS_PERCENT = config('MAX_CHINESE_CHARS_PERCENT',
-                                   float,
-                                   default=0.15)
-
-
-# Delay (in seconds) to wait before sending welcome message. New users have
-# 5 minutes to solve a captcha. The default delay is 5 and a half minutes.
-WELCOME_DELAY = config('WELCOME_DELAY', int, default=10)
-
-
-def bot_replies_enabled() -> bool:
-    return VERBOSITY > 0
+POLL_INTERVAL = config('POLL_INTERVAL', cast=int, default=3)
 
 
 THE_ZEN_OF_PYTHON = [
