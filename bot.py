@@ -5,7 +5,7 @@ import telegram
 from telegram.ext import Updater, Filters, MessageHandler, CommandHandler
 from telegram import Update
 
-import config
+import settings
 import utils
 
 
@@ -14,7 +14,7 @@ logger = logging.getLogger('bot')
 
 def command_start(update, context):
     logger.info('Received command /start')
-    context.bot.send_message(chat_id=update.message.chat_id, text=config.BOT_GREETING)
+    context.bot.send_message(chat_id=update.message.chat_id, text=settings.BOT_GREETING)
 
 
 def command_help(update, context):
@@ -51,7 +51,7 @@ def welcome(update: Update, context):
 
 
 def reply(update, context):
-    if not config.bot_replies_enabled():
+    if not settings.bot_replies_enabled():
         return
 
     msg = update.message.text
@@ -66,11 +66,11 @@ def reply(update, context):
 
 def main():
     logging.basicConfig(
-        level=config.LOG_LEVEL,
+        level=settings.LOG_LEVEL,
         format='%(asctime)s [%(name)s] %(levelname)s: %(message)s',
         )
     logger.info('Starting bot...')
-    updater = Updater(config.BOT_TOKEN)
+    updater = Updater(settings.BOT_TOKEN)
     dp = updater.dispatcher
 
     dp.add_handler(CommandHandler('start', command_start))
@@ -81,7 +81,7 @@ def main():
     dp.add_handler(MessageHandler(Filters.chat_type.groups, reply))
 
     logger.info('Bot is ready')
-    updater.start_polling(poll_interval=config.POLL_INTERVAL)
+    updater.start_polling(poll_interval=settings.POLL_INTERVAL)
     updater.idle()
 
 

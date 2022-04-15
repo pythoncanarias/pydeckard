@@ -5,7 +5,7 @@ import re
 from typing import Tuple, Optional, NamedTuple
 
 from telegram import User
-import config
+import settings
 
 
 def is_chinese(c):
@@ -24,41 +24,8 @@ def is_chinese(c):
     )
 
 
-def too_much_chinese_chars(s):
-    letters = list(s)
-    num_chinese_chars = sum([is_chinese(c) for c in letters])
-    percent = num_chinese_chars / len(letters)
-    # More than allowed chars are Chinese
-    return percent > config.MAX_CHINESE_CHARS_PERCENT
-
-
-def is_valid_name(user: User):
-    return len(user.first_name) <= config.MAX_HUMAN_USERNAME_LENGTH
-
-
 def is_tgmember_sect(first_name: str):
     return "tgmember.com" in first_name.lower()
-
-
-def is_bot(user: User):
-    """
-    Returns True if a new user is a bot. So far only the length of the
-    username is checked. In the future, we can add more conditions and use a
-    score/weight of the probability of being a bot.
-
-    :param user: The new User
-    :type user: User
-    :return: True if the new user is considered a bot (according to our rules)
-    :rtype: bool
-    """
-    # Add all the checks that you consider necessary
-    return any(
-        (
-            not is_valid_name(user),
-            too_much_chinese_chars(user.first_name),
-            is_tgmember_sect(user.first_name),
-        )
-    )
 
 
 @functools.lru_cache()
@@ -71,7 +38,7 @@ def get_reply_regex(trigger_words: Tuple[str]):
 
 
 def bot_wants_to_reply() -> bool:
-    return random.random() < config.VERBOSITY
+    return random.random() < settings.VERBOSITY
 
 
 class BotReplySpec(NamedTuple):
@@ -81,7 +48,7 @@ class BotReplySpec(NamedTuple):
 
 
 def triggers_reply(message: str) -> Optional[BotReplySpec]:
-    for trigger_words, bot_reply in config.REPLIES.items():
+    for trigger_words, bot_reply in settings.REPLIES.items():
         regex = get_reply_regex(trigger_words)
         match = regex.search(message)
         if match is not None and bot_wants_to_reply():
