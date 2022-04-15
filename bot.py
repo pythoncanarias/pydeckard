@@ -39,30 +39,9 @@ def command_status(update, context):
 def welcome(update: Update, context):
     logger.info('Received new user event')
     new_member = update.message.new_chat_members[0]
+    msg = f"Welcome {new_member.name}!! " \
+           "I am a friendly and polite *bot* 🤖"
 
-    logger.info(f'Waiting {config.WELCOME_DELAY} seconds until user completes captcha...')
-    sleep(config.WELCOME_DELAY)
-    membership_info = context.bot.get_chat_member(update.message.chat_id, new_member.id)
-    if membership_info['status'] == 'left':
-        logger.info(f'Skipping welcome message, user {new_member.name} is no longer in the chat')
-        return
-
-    logger.info(f'send welcome message for {new_member.name}')
-    msg = None
-
-    if new_member.is_bot:
-        msg = f"{new_member.name} is a *bot*!! " \
-              "-> It could be kindly removed 🗑"
-    else:
-        if utils.is_bot(new_member):
-            context.bot.delete_message(update.message.chat_id,
-                                       update.message.message_id)
-            if context.bot.kick_chat_member(update.message.chat_id, new_member.id):
-                msg = (f"*{new_member.username}* has been banned because I "
-                       "considered it was a bot. ")
-        else:
-            msg = f"Welcome {new_member.name}!! " \
-                   "I am a friendly and polite *bot* 🤖"
     if msg:
         context.bot.send_message(
             chat_id=update.message.chat_id,
