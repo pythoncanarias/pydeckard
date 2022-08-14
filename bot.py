@@ -1,13 +1,15 @@
+import csv
+import datetime
 import logging
+from os import linesep
 
 import telegram
-from telegram.ext import Updater, Filters, MessageHandler, CommandHandler
 from telegram import Update
+from telegram.ext import Updater, Filters, MessageHandler, CommandHandler
 
+import scraper
 import settings
 import utils
-import scraper
-
 
 logger = logging.getLogger('bot')
 
@@ -38,22 +40,43 @@ def command_status(update, context):
 
 def welcome(update: Update, context):
     logger.info('Received new user event')
-    new_member = update.message.new_chat_members[0]
-    msg = f"Welcome {new_member.name}!! " \
-           "I am a friendly and polite *bot* 🤖"
+    # new_member = update.message.new_chat_members[0]
+    # msg = f"Welcome {new_member.name}!! " \
+    #        "I am a friendly and polite *bot* 🤖"
+    # msg = 'sefdgsdgf'
 
-    if msg:
-        msg = scraper.sample()
-        context.bot.send_message(
-            chat_id=update.message.chat_id,
-            text=msg,
-            parse_mode=telegram.ParseMode.HTML
-        )
-        # context.bot.send_message(
-        #     chat_id=update.message.chat_id,
-        #     text=msg,
-        #     parse_mode=telegram.ParseMode.MARKDOWN
-        # )
+    # if msg:
+    msg = []
+    try:
+        with open('today.csv') as csvfile:
+            file_read = csv.reader(csvfile)
+            for row in file_read:
+                msg.append(','.join(row))
+        # print(msg)
+    except FileNotFoundError:
+        pass
+    context.bot.send_message(
+        chat_id=update.message.chat_id,
+        text=msg,
+        parse_mode=telegram.ParseMode.MARKDOWN
+    )
+
+    with open('today.csv', 'w') as csvfile:
+        file_write = csv.writer(csvfile, delimiter=linesep)
+        utc_now = datetime.datetime.utcnow()
+        file_write.writerow([
+            utc_now.strftime('%Y/%m/%d'),
+            utc_now.strftime('%H:%M:%S')
+        ])
+
+    # msg = scraper.sample()
+    # print(msg)
+
+    # context.bot.send_message(
+    #     chat_id=update.message.chat_id,
+    #     text=msg,
+    #     parse_mode=telegram.ParseMode.HTML
+    # )
 
 
 def reply(update, context):
@@ -92,4 +115,5 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    # main()
+    welcome(None, None)
