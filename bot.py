@@ -115,21 +115,6 @@ def command_status(update, context):
     )
 
 
-def welcome(update: Update, context):
-    logger.info('Received new user event')
-    new_member = update.message.new_chat_members[0]
-    msg = f"Hola {new_member.name}!! " \
-          "Escriba /help para ver los comando disponibles." \
-          "También puede escribir /cheapest para ver las 3 horas más baratas del día"
-
-    if msg:
-        context.bot.send_message(
-            chat_id=update.message.chat_id,
-            text=msg,
-            parse_mode=telegram.ParseMode.HTML
-        )
-
-
 def reply(update, context):
     if not settings.bot_replies_enabled():
         return
@@ -158,9 +143,6 @@ def main():
     dp.add_handler(CommandHandler('help', command_help))
     dp.add_handler(CommandHandler('status', command_status))
     dp.add_handler(CommandHandler('cheapest', command_cheapest))
-    # Welcome msg
-    dp.add_handler(MessageHandler(Filters.status_update.new_chat_members,
-                                  welcome, run_async=True))
     dp.add_handler(MessageHandler(Filters.chat_type.groups, reply))
 
     logger.info('Bot is ready')

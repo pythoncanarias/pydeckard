@@ -24,7 +24,8 @@ POLL_INTERVAL = config('POLL_INTERVAL', cast=int, default=3)
 
 
 BOT_GREETING = config('BOT_GREETING',
-                      default="Hi! I'm a friendly, slightly psychopath robot")
+                      default=f"¡¡Bienvenid@!!"
+                              f"No te olvides de usar el botón de menú para ver las opciones disponibles.")
 
 THE_ZEN_OF_PYTHON = [
     "Beautiful is better than ugly.",
@@ -46,7 +47,7 @@ THE_ZEN_OF_PYTHON = [
     "If the implementation is hard to explain, it's a bad idea.",
     "If the implementation is easy to explain, it may be a good idea.",
     "Namespaces are one honking great idea -- let's do more of those!"
-    ]
+]
 
 
 REPLIES = {
