@@ -29,7 +29,7 @@ def __get_price(data: dict) -> str:
     price = data.get('price')
     price_kwh = float(price) / 1000 if price else ''
 
-    return f"**{data.get('hour', '')}**: {price_kwh} € / kWh."
+    return f"<b>{data.get('hour', '')}</b>: {price_kwh} € / kWh."
 
 
 def __get_price_data_from_file(file_reader, message=None) -> [str]:
@@ -69,7 +69,7 @@ def command_cheapest(update, context):
         with open('today.csv') as csvfile:
             file_read = csv.reader(csvfile)
             file_date = next(file_read)[0]
-            msg = [f"**Hoy {file_date}**"]
+            msg = [f"<pre>Hoy {file_date}</pre>"]
 
             if file_date == date_str:
                 msg = __get_price_data_from_file(file_reader=file_read)
@@ -81,13 +81,13 @@ def command_cheapest(update, context):
         with open('today.csv') as csvfile:
             file_read = csv.reader(csvfile)
             file_date = next(file_read)[0]
-            msg = [f"**Hoy {file_date}**"]  # ignore first line
+            msg = [f"<pre>Hoy {file_date}</pre>"]  # ignore first line
             msg = __get_price_data_from_file(file_reader=file_read, message=msg)
 
     context.bot.send_message(
         chat_id=update.message.chat_id,
         text=f"{linesep}".join(msg),
-        parse_mode=telegram.ParseMode.MARKDOWN_V2
+        parse_mode=telegram.ParseMode.HTML
     )
 
 
