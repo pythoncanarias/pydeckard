@@ -11,6 +11,7 @@ Command to get spanish light prices.
 import csv
 import datetime
 import logging
+import os
 from os import linesep
 
 import requests
@@ -160,8 +161,12 @@ def main():
     dp.add_handler(MessageHandler(Filters.chat_type.groups, reply))
 
     logger.info('Bot is ready')
-    updater.start_polling(poll_interval=settings.POLL_INTERVAL)
-    updater.idle()
+    updater.start_webhook(
+        listen="0.0.0.0",
+        port=int(os.environ.get('PORT', '8443')),
+        url_path=settings.BOT_TOKEN,
+        webhook_url="https://tari-luz-esp-bot.herokuapp.com" + settings.BOT_TOKEN
+    )
 
 
 if __name__ == "__main__":
