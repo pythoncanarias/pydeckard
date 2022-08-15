@@ -26,7 +26,10 @@ logger = logging.getLogger('bot')
 
 
 def __get_price(data: dict) -> str:
-    return f"**{data.get('hour', '')}**: {data.get('price', '')} {data.get('units', '')}."
+    price = data.get('price')
+    price_kwh = float(price) / 1000 if price else ''
+
+    return f"**{data.get('hour', '')}**: {price_kwh} € / kWh."
 
 
 def __get_price_data_from_file(file_reader, message=None) -> [str]:
@@ -50,8 +53,8 @@ def __update_cache_file_with_cheapest(date_str: str) -> bool:
         result = requests.get(api_url)
         data_json = result.json()
 
-        for element in data_json:
-            msg_write.append([__get_price(element)])
+        for index, element in enumerate(data_json, start=1):
+            msg_write.append([f"{index}. {__get_price(element)}"])
 
         file_write.writerows(msg_write)
     return True
@@ -84,7 +87,7 @@ def command_cheapest(update, context):
     context.bot.send_message(
         chat_id=update.message.chat_id,
         text=f"{linesep}".join(msg),
-        parse_mode=telegram.ParseMode.MARKDOWN
+        parse_mode=telegram.ParseMode.MARKDOWN_V2
     )
 
 
