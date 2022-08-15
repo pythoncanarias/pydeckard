@@ -165,7 +165,7 @@ def main():
         listen="0.0.0.0",
         port=int(os.environ.get('PORT', '8443')),
         url_path=settings.BOT_TOKEN,
-        webhook_url="https://tari-luz-esp-bot.herokuapp.com" + settings.BOT_TOKEN
+        webhook_url="https://tari-luz-esp-bot.herokuapp.com/" + settings.BOT_TOKEN
     )
 
 
