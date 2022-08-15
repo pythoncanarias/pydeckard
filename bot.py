@@ -11,9 +11,9 @@ Command to get spanish light prices.
 import csv
 import datetime
 import logging
-import requests
 from os import linesep
 
+import requests
 import telegram
 from telegram import Update
 from telegram.ext import Updater, Filters, MessageHandler, CommandHandler
@@ -149,9 +149,12 @@ def main():
     updater = Updater(settings.BOT_TOKEN)
     dp = updater.dispatcher
 
+    # Commands
     dp.add_handler(CommandHandler('start', command_start))
     dp.add_handler(CommandHandler('help', command_help))
     dp.add_handler(CommandHandler('status', command_status))
+    dp.add_handler(CommandHandler('cheapest', command_cheapest))
+    # Welcome msg
     dp.add_handler(MessageHandler(Filters.status_update.new_chat_members,
                                   welcome, run_async=True))
     dp.add_handler(MessageHandler(Filters.chat_type.groups, reply))
