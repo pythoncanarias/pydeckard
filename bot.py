@@ -43,7 +43,7 @@ def __get_price_data_from_file(file_reader, message=None) -> [str]:
 
 
 def __update_cache_file_with_cheapest(date_str: str) -> bool:
-    number_of_prices = 3
+    number_of_prices = 5
     api_url = f'https://api.preciodelaluz.org/v1/prices/cheapests?zone=PCB&n={number_of_prices}'
 
     with open('today.csv', 'w') as csvfile:
@@ -64,6 +64,7 @@ def command_cheapest(update, context):
     logger.info('Bot asked to execute /cheapest command')
     utc_now = datetime.datetime.utcnow()
     date_str = utc_now.strftime('%d/%m/%Y')
+    msg = []
 
     try:
         with open('today.csv') as csvfile:
@@ -72,7 +73,7 @@ def command_cheapest(update, context):
             msg = [f"<pre>Hoy {file_date}</pre>"]
 
             if file_date == date_str:
-                msg = __get_price_data_from_file(file_reader=file_read)
+                msg = __get_price_data_from_file(file_reader=file_read, message=msg)
             else:
                 raise FileNotFoundError
     except FileNotFoundError:
