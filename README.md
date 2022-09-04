@@ -1,11 +1,10 @@
 # PyDeckard
 
-Telegram Bot made in Python to automate different tasks of [Python Canarias](http://pythoncanarias.es).
+Telegram Bot made in Python to get Spain light rates.
 
-![RickDeckard](rick-deckard.jpg) 
+![bot-pic](tari-luz-esp-bot.jpg) 
 
-> "I've seen things you people wouldn't believe"  
-> In honour of Rick Deckard from Blade Runner.
+Image by [rawpixel.com on Freepik](https://www.freepik.com/free-vector/illustration-light-bulb-icon_3207916.htm).
 
 ## Installation
 
