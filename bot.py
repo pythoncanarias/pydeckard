@@ -29,7 +29,7 @@ def __get_price(data: dict) -> str:
     price = data.get('price')
     price_kwh = float(price) / 1000 if price else ''
 
-    return f"<b>{data.get('hour', '')}</b>: {price_kwh} € / kWh."
+    return f"<b>{data.get('hour', '')}</b>: {price_kwh:.3f}} € / kWh."
 
 
 def __get_price_data_from_file(file_reader, message=None) -> [str]:
