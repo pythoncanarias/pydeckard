@@ -4,8 +4,8 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-python-telegram-bot = "==13.8.1"
-prettyconf = "==2.0.1"
+python-telegram-bot = "==21.4"
+prettyconf = "==2.2.1"
 
 [dev-packages]
 "flake8" = "*"
@@ -15,4 +15,4 @@ pytest = "*"
 yapf = "*"
 
 [requires]
-python_version = "3.6"
+python_version = "3.8.19"
