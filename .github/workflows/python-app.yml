@@ -1,0 +1,47 @@
+# This workflow will install Python dependencies, run tests and lint with a single version of Python
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
+
+name: CI/CD test
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+env:
+  PYTHON_VERSION: 3.10.8
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Python ${{ env.PYTHON_VERSION }}
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+
+    - name: Caches pip
+      uses: actions/cache@v4
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-py-${{ env.PYTHON_VERSION }}
+
+    - name: Install pipenv
+      run: |
+        pip install -U pip~=24.1
+        pip install pipenv~=2024.0.1
+
+    - name: Install dependencies
+      run: pipenv install -d
+
+    - name: Lint code
+      run: flake8
+
+    - name: Run tests
+      run: pytest tests
