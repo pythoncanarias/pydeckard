@@ -22,7 +22,7 @@ def command_help(update, context):
     context.bot.send_message(
         chat_id=update.message.chat_id,
         text="Available commands:\n"
-        " - /start - start intereaction with the bot\n"
+        " - /start - start interaction with the bot\n"
         " - /help - Show commands\n"
         " - /status - Show status and alive time\n"
         )
