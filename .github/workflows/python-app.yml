@@ -5,9 +5,13 @@ name: CI/CD test
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - master
+      - main
   pull_request:
-    branches: [ main ]
+    branches:
+      - master
+      - main
 
 env:
   PYTHON_VERSION: 3.10.8
@@ -41,7 +45,7 @@ jobs:
       run: pipenv install -d
 
     - name: Lint code
-      run: flake8
+      run: pipenv run flake8
 
     - name: Run tests
-      run: pytest tests
+      run: pipenv run pytest test
