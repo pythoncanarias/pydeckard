@@ -8,7 +8,7 @@ python-telegram-bot = "==21.4.*"
 prettyconf = "==2.0.1"
 
 [dev-packages]
-"flake8" = "*"
+"ruff" = "*"
 "fabric3" = "*"
 rope = "*"
 pytest = "*"
