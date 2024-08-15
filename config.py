@@ -31,9 +31,7 @@ def log(logger_method):
 
 
 TELEGRAM_BOT_TOKEN = config(
-    "TELEGRAM_BOT_TOKEN",
-    default="put here the token of your bot",
-    suppress_log=True
+    "TELEGRAM_BOT_TOKEN", default="put here the token of your bot", suppress_log=True
 )
 
 # How likely is the bot to be triggered by one of the patterns it recognises.
@@ -48,14 +46,14 @@ LOG_LEVEL = config('LOG_LEVEL', default='WARNING')
 POLL_INTERVAL = config('POLL_INTERVAL', int, default=3)
 
 # Bot message for start command
-BOT_GREETING = config('BOT_GREETING',
-                      default="Hi! I'm a friendly, slightly psychopath robot")
+BOT_GREETING = config(
+    'BOT_GREETING',
+    default="<b>Hi!</b> I'm a friendly, <s>crazy</s> slightly psychopath robot",
+    )
 
 # A username longer than this will be considered non-human
 # - Allowed values: An integer larger than 1
-MAX_HUMAN_USERNAME_LENGTH = config('MAX_HUMAN_USERNAME_LENGTH',
-                                   int,
-                                   default=100)
+MAX_HUMAN_USERNAME_LENGTH = config('MAX_HUMAN_USERNAME_LENGTH', int, default=100)
 
 
 # We have found, through empiric evidence, that a large ration of Chinese
@@ -63,9 +61,7 @@ MAX_HUMAN_USERNAME_LENGTH = config('MAX_HUMAN_USERNAME_LENGTH',
 # This sets the maximum allowed percent of Chinese characters before
 # considering the user a bot.
 # - Allowed values: A float from 0 to 1
-MAX_CHINESE_CHARS_PERCENT = config('MAX_CHINESE_CHARS_PERCENT',
-                                   float,
-                                   default=0.15)
+MAX_CHINESE_CHARS_PERCENT = config('MAX_CHINESE_CHARS_PERCENT', float, default=0.15)
 
 
 # Delay (in seconds) to wait before sending welcome message. New users have
@@ -93,23 +89,30 @@ THE_ZEN_OF_PYTHON = [
     "There should be one-- and preferably only one --obvious way to do it.",
     "Although that way may not be obvious at first unless you're Dutch.",
     "Now is better than never.",
-    "Although never is often better than *right* now.",
+    "Although never is often better than <b>right</b> now.",
     "If the implementation is hard to explain, it's a bad idea.",
     "If the implementation is easy to explain, it may be a good idea.",
-    "Namespaces are one honking great idea -- let's do more of those!"
-    ]
+    "Namespaces are one honking great idea -- let's do more of those!",
+]
 
 
 REPLIES = {
     ("java",): "BIBA JABA!! ☕️",
     ("cobol",): "BIBA KOBOL!! 💾",
     ("javascript",): "BIBA JABAESKRIPT!! 🔮",
-    ("php",): "BIBA PEHACHEPÉ!! ⛱",
-    ("he visto", "has visto", "han visto", "visteis", "vieron", "vi"):
-        "Yo he visto cosas que vosotros no creeríais. Atacar naves en llamas "
-        "más allá de Orión. He visto Rayos-C brillar en la oscuridad cerca de "
-        "la puerta de Tannhäuser. Todos esos momentos se perderán en el "
-        "tiempo... como lágrimas en la lluvia. Es hora de morir. 🔫",
+    ("php",): "BIBA PEHACHEPÉ!.! ⛱",
+    ("chatgpt", "gpt", "openai"): "BIBA CHATJEPETÉ!! 🤖",
+    (
+        "he visto",
+        "has visto",
+        "han visto",
+        "visteis",
+        "vieron",
+        "vi",
+    ): "Yo he visto cosas que vosotros no creeríais. Atacar naves en llamas "
+    "más allá de Orión. He visto Rayos-C brillar en la oscuridad cerca de "
+    "la puerta de Tannhäuser. Todos esos momentos se perderán en el "
+    "tiempo... como lágrimas en la lluvia. Es hora de morir. 🔫",
     ("python", "pitón", "piton"): THE_ZEN_OF_PYTHON,
 }
 
