@@ -46,7 +46,10 @@ LOG_LEVEL = config('LOG_LEVEL', default='WARNING')
 POLL_INTERVAL = config('POLL_INTERVAL', int, default=3)
 
 # Bot message for start command
-BOT_GREETING = config('BOT_GREETING', default="Hi! I'm a friendly, slightly psychopath robot")
+BOT_GREETING = config(
+    'BOT_GREETING',
+    default="<b>Hi!</b> I'm a friendly, <s>crazy</s> slightly psychopath robot",
+    )
 
 # A username longer than this will be considered non-human
 # - Allowed values: An integer larger than 1
@@ -86,7 +89,7 @@ THE_ZEN_OF_PYTHON = [
     "There should be one-- and preferably only one --obvious way to do it.",
     "Although that way may not be obvious at first unless you're Dutch.",
     "Now is better than never.",
-    "Although never is often better than *right* now.",
+    "Although never is often better than <b>right</b> now.",
     "If the implementation is hard to explain, it's a bad idea.",
     "If the implementation is easy to explain, it may be a good idea.",
     "Namespaces are one honking great idea -- let's do more of those!",
@@ -97,7 +100,7 @@ REPLIES = {
     ("java",): "BIBA JABA!! ☕️",
     ("cobol",): "BIBA KOBOL!! 💾",
     ("javascript",): "BIBA JABAESKRIPT!! 🔮",
-    ("php",): "BIBA PEHACHEPÉ!! ⛱",
+    ("php",): "BIBA PEHACHEPÉ!.! ⛱",
     ("chatgpt", "gpt", "openai"): "BIBA CHATJEPETÉ!! 🤖",
     (
         "he visto",

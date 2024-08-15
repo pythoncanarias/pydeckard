@@ -7,3 +7,4 @@ virtualenv
 .DS_Store
 .env
 .pytest_cache
+.python-version
