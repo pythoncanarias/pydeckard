@@ -2,4 +2,5 @@
 # Master script.
 
 cd "$(dirname "$0")"
-exec pipenv run python bot.py
+source ~/.pyenv/versions/3.12.4/envs/pydeckard/bin/activate
+exec python bot.py
