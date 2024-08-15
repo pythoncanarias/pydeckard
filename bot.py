@@ -6,13 +6,10 @@ import logging
 import sys
 import time
 
+import telegram
 from telegram import Update
+from telegram.ext import ApplicationBuilder, filters, MessageHandler, CommandHandler, ContextTypes
 from telegram.constants import ParseMode
-from telegram.ext import ApplicationBuilder
-from telegram.ext import CommandHandler
-from telegram.ext import MessageHandler
-from telegram.ext import ContextTypes
-from telegram.ext import filters
 
 import config
 import utils
@@ -94,61 +91,47 @@ class DeckardBot():
             parse_mode=ParseMode.HTML,
             )
 
-    async def welcome(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
-        self.trace('Received new user event')
+    async def welcome(self, update: Update, context):
+        logger.info('Received new user event')
         new_member = update.message.new_chat_members[0]
-        self.trace(
-            f'Waiting {config.WELCOME_DELAY} seconds'
-            ' until user completes captcha...'
-            )
+
+        self.trace(f'Waiting {config.WELCOME_DELAY} seconds until user completes captcha...')
         time.sleep(config.WELCOME_DELAY)
-        membership_info = context.bot.get_chat_member(
-            update.message.chat_id,
-            new_member.id,
-            )
+        membership_info = await context.bot.get_chat_member(update.message.chat_id, new_member.id)
         if membership_info['status'] == 'left':
-            self.trace('Skipping welcome message, user is no longer in the chat')
+            self.trace(f'Skipping welcome message, user {new_member.name} is no longer in the chat')
             return
 
         self.trace(f'send welcome message for {new_member.name}')
+        msg = None
 
-        msg = f"Welcome {new_member.name}!! I am a friendly and polite *bot* 🤖"
         if new_member.is_bot:
-            msg = (
-                f"{new_member.name} looks like a *bot*!! "
-                "-> It could be kindly removed 🗑"
-                )
+            msg = f"{new_member.name} is a *bot*\\!\\! " \
+                  "-> It could be kindly removed 🗑"
         else:
             if utils.is_bot(new_member):
-                context.bot.delete_message(
-                    update.message.chat_id,
-                    update.message.message_id,
-                    )
-                if context.bot.kick_chat_member(
-                    update.message.chat_id,
-                    new_member.id
-                    ):
-                    msg = (
-                        f"*{new_member.username}* has been banned because I "
-                        "considered it a bot. "
-                        )
-        await context.bot.send_message(
-            chat_id=update.message.chat_id,
-            text=msg,
-            parse_mode=ParseMode.HTML,
-            )
+                await context.bot.delete_message(update.message.chat_id,
+                                           update.message.message_id)
+                if await context.bot.kick_chat_member(update.message.chat_id, new_member.id):
+                    msg = (f"*{new_member.username}* has been banned because I "
+                           "considered it was a bot. ")
+            else:
+                msg = f"Welcome {new_member.name}\\!\\! " \
+                       "I am a friendly and polite *bot* 🤖"
+        if msg:
+            await update.message.reply_text(msg, parse_mode=telegram.constants.ParseMode('MarkdownV2'))
 
     async def reply(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
         if config.bot_replies_enabled():
             msg = update.message.text
             reply_spec = utils.triggers_reply(msg) if msg else None
             if reply_spec is not None:
-                self.trace(f'bot sends reply {reply_spec.reply}')
-                await context.bot.send_message(
+                logger.info(f'bot sends reply {reply_spec.reply}')
+                await update.message.reply_text(reply_spec.reply)
+                context.bot.send_message(
                     chat_id=update.message.chat_id,
-                    text=reply_spec.reply,
-                    parse_mode=ParseMode.HTML,
-                    )
+                    text=reply_spec.reply
+                )
 
     def run(self):
         self.trace('Starting bot...')
