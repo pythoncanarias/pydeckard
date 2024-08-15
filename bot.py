@@ -92,7 +92,7 @@ class DeckardBot():
             )
 
     async def welcome(self, update: Update, context):
-        logger.info('Received new user event')
+        self.trace('Received new user event')
         new_member = update.message.new_chat_members[0]
 
         self.trace(f'Waiting {config.WELCOME_DELAY} seconds until user completes captcha...')
@@ -126,7 +126,7 @@ class DeckardBot():
             msg = update.message.text
             reply_spec = utils.triggers_reply(msg) if msg else None
             if reply_spec is not None:
-                logger.info(f'bot sends reply {reply_spec.reply}')
+                self.trace(f'bot sends reply {reply_spec.reply}')
                 await update.message.reply_text(reply_spec.reply)
                 context.bot.send_message(
                     chat_id=update.message.chat_id,
