@@ -101,21 +101,15 @@ def pluralise(number: int, singular: str, plural: Optional[str] = None) -> str:
     return singular if number == 1 else plural
 
 
-def since(dt=None, reference=datetime.datetime.now()) -> str:
+def since(reference) -> str:
     """Returns a textual description of time passed.
 
-    Parameters:
-
-     - dt: datetime is the date to calculate the difference from
-           reference. If not used, take the value from the current
-           datetime.
-
+    Parameter:
      - reference: datetime is the datetime used to get the difference
-        ir delta. If not defined, default value is since the definition
-        of the function, this is,since the moment the current run of the
-        program started.
+        ir delta.
     """
-    dt = dt or datetime.datetime.now()
+
+    dt = datetime.datetime.now()
     delta = dt - reference
     buff = []
     days = delta.days
@@ -125,10 +119,10 @@ def since(dt=None, reference=datetime.datetime.now()) -> str:
     if seconds > 3600:
         hours = seconds // 3600
         buff.append(f"{hours} {pluralise(hours, 'hour')}")
-        seconds = seconds % 3600
+        seconds %= 3600
     minutes = seconds // 60
     if minutes > 0:
         buff.append(f"{minutes} {pluralise(minutes, 'minute')}")
-    seconds = seconds % 60
+    seconds %= 60
     buff.append(f"{seconds} {pluralise(seconds, 'second')}")
     return " ".join(buff)
