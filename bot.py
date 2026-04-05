@@ -106,7 +106,7 @@ class DeckardBot():
     async def command_config(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
         self.trace('Received command: /config')
         buff = [
-            'Probabilidad de responder: {config.VERBOSITY:.2f}',
+            f'Probabilidad de responder: {config.VERBOSITY:.2f}',
             'Disparadores:',
             ]
         trigger_words = sorted(list(itertools.chain(*config.REPLIES.keys())))
