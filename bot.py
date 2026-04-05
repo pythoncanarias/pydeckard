@@ -89,6 +89,7 @@ class DeckardBot():
                 "<code>/start</code> : start intereaction with the bot\n"
                 "<code>/help</code> : Show commands\n"
                 "<code>/status</code> : Show status and alive time\n"
+                "<code>/config</code> : See (some) config parameters\n"
                 "<code>/zen</code> : Show the Zen of Python\n"
                 ),
             parse_mode=ParseMode.HTML,
