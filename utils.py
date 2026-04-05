@@ -67,7 +67,7 @@ def get_reply_regex(trigger_words: Tuple[str]):
     Build a regex to match on the trigger words
     """
     pattern = "|".join([fr"\b{word}\b" for word in trigger_words])
-    return re.compile(pattern, re.I)
+    return re.compile(pattern, re.IGNORECASE)
 
 
 def bot_wants_to_reply() -> bool:

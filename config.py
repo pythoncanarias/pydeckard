@@ -98,9 +98,12 @@ THE_ZEN_OF_PYTHON = [
 
 REPLIES = {
     ("java",): "BIBA JABA!! ☕️",
+    ("rust",): "BIBA RRRRUST!! ☕️",
+    ("ruby",): "BIBA RRRRUBÍ!! ☕️",
     ("cobol",): "BIBA KOBOL!! 💾",
     ("javascript",): "BIBA JABAESKRIPT!! 🔮",
     ("php",): "BIBA PEHACHEPÉ!.! ⛱",
+    ("perl",): "BIBA PERRRRRL! 🐫",
     ("chatgpt", "gpt", "openai"): "BIBA CHATJEPETÉ!! 🤖",
     (
         "he visto",

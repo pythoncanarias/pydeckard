@@ -1,6 +1,7 @@
 #!/usr/bin/enb python3
 
 from datetime import datetime as DateTime
+import itertools
 import argparse
 import logging
 import sys
@@ -102,6 +103,22 @@ class DeckardBot():
             parse_mode=ParseMode.HTML,
             )
 
+    async def command_config(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
+        self.trace('Received command: /config')
+        buff = [
+            'Probabilidad de responder: {config.VERBOSITY:.2f}',
+            'Disparadores:',
+            ]
+        trigger_words = sorted(list(itertools.chain(*config.REPLIES.keys())))
+        for word in trigger_words:
+            buff.append(f' - {word}')
+        text = '\n'.join(buff)
+        await context.bot.send_message(
+            chat_id=update.effective_chat.id,
+            text=text,
+            parse_mode=ParseMode.HTML,
+            )
+
     async def welcome(self, update: Update, context):
         self.trace('Received new user event')
         new_member = update.message.new_chat_members[0]
@@ -152,6 +169,9 @@ class DeckardBot():
 
         # Zen Command
         application.add_handler(CommandHandler('zen', self.command_zen))
+
+        # Config Command
+        application.add_handler(CommandHandler('config', self.command_config))
 
         welcome_handler = MessageHandler(
             filters.StatusUpdate.NEW_CHAT_MEMBERS,
