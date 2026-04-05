@@ -5,6 +5,7 @@ import argparse
 import logging
 import sys
 import time
+from logging.handlers import RotatingFileHandler
 
 import telegram
 from telegram import Update
@@ -20,6 +21,7 @@ class DeckardBot():
     def __init__(self):
         self.get_options()
         self.set_logger()
+        self.verbose = False
         self.started_at = DateTime.now()
     
     def get_options(self):
@@ -34,19 +36,28 @@ class DeckardBot():
 
     def set_logger(self):
         self.logger = logging.getLogger('bot')
+
+        file_handler = RotatingFileHandler('bot.log', maxBytes=1_000_000, backupCount=5)
+        console_handler = logging.NullHandler()
+        if self.verbose:
+            console_handler = logging.StreamHandler()
+
         logging.basicConfig(
-            level=config.LOG_LEVEL,
-            format='%(asctime)s [%(name)s] %(levelname)s: %(message)s',
-            )
+                level=logging.WARNING,  # Pone el nivel de todos los logger a WARNING
+                format='%(asctime)s [%(name)s] %(levelname)s: %(message)s',
+                handlers=[file_handler,console_handler],
+                force=True
+                )
+
+        # Ajustamos el nivel del logger bot
+        self.logger.setLevel(config.LOG_LEVEL)
         config.log(self.logger.info)
 
     def trace(self, msg):
-        self.logger.info('bot asked to execute /status commamd')
-        if self.verbose:
-            print(msg)
+        self.logger.info(msg)
 
     async def command_status(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
-        self.trace('bot asked to execute /status commamd')
+        self.trace('Received command: /status')
         python_version = sys.version.split(maxsplit=1)[0]
         text = '\n'.join([
             config.BOT_GREETING,
@@ -61,7 +72,7 @@ class DeckardBot():
         self.trace(text)
 
     async def command_start(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
-        self.trace('Received command /start')
+        self.trace('Received command: /start')
         await context.bot.send_message(
             chat_id=update.effective_chat.id,
             text=config.BOT_GREETING,
@@ -69,7 +80,7 @@ class DeckardBot():
             )
 
     async def command_help(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
-        self.trace('Received command /help')
+        self.trace('Received command: /help')
         await context.bot.send_message(
             chat_id=update.effective_chat.id,
             text=(
@@ -83,7 +94,7 @@ class DeckardBot():
             )
 
     async def command_zen(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
-        self.trace('Received command /zen')
+        self.trace('Received command: /zen')
         text = '\n'.join(config.THE_ZEN_OF_PYTHON)
         await context.bot.send_message(
             chat_id=update.effective_chat.id,
@@ -102,7 +113,7 @@ class DeckardBot():
             self.trace(f'Skipping welcome message, user {new_member.name} is no longer in the chat')
             return
 
-        self.trace(f'send welcome message for {new_member.name}')
+        self.trace(f'Send welcome message for {new_member.name}')
         msg = None
 
         if new_member.is_bot:
@@ -126,7 +137,7 @@ class DeckardBot():
             msg = update.message.text
             reply_spec = utils.triggers_reply(msg) if msg else None
             if reply_spec is not None:
-                self.trace(f'bot sends reply {reply_spec.reply}')
+                self.trace(f'Sending reply: {reply_spec.reply}')
                 await update.message.reply_text(reply_spec.reply)
                 context.bot.send_message(
                     chat_id=update.message.chat_id,
@@ -134,7 +145,7 @@ class DeckardBot():
                 )
 
     def run(self):
-        self.trace('Starting bot...')
+        self.trace('Starting bot')
         application = ApplicationBuilder().token(config.TELEGRAM_BOT_TOKEN).build()
         start_handler = CommandHandler('start', self.command_start)
         application.add_handler(start_handler)
