@@ -102,9 +102,10 @@ REPLIES = {
     ("ruby",): "BIBA RRRRUBÍ!! ♦",
     ("elixir",): "BIBA ELICSÍR!! ¥",
     ("cobol",): "BIBA KOBOL!! 💾",
-    ("fortran",): "BIBA FORRRTRÁN √",
-    ("javascript",): "BIBA JABAESKRIPT!! 🔮",
-    ("php",): "BIBA PEHACHEPÉ!.! ⛱",
+    ("fortran",): "BIBA FORRRTRÁN!! √",
+    ("c\+\+",): "BIBA CEMASMÁS!! ⊕",
+    ("javascript",): "BIBA JABAESCRIP!! 🔮",
+    ("php",): "BIBA PEACHEPÉ!.! ⛱",
     ("perl",): "BIBA PERRRRRL! 🐫",
     ("chatgpt", "gpt", "openai"): "BIBA CHATJEPETÉ!! 🤖",
     (
