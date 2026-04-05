@@ -139,10 +139,6 @@ class DeckardBot():
             if reply_spec is not None:
                 self.trace(f'Sending reply: {reply_spec.reply}')
                 await update.message.reply_text(reply_spec.reply)
-                context.bot.send_message(
-                    chat_id=update.message.chat_id,
-                    text=reply_spec.reply
-                )
 
     def run(self):
         self.trace('Starting bot')
