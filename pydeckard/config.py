@@ -18,12 +18,12 @@ class _ConfigItem(NamedTuple):
 
 
 def config(item, cast=lambda v: v, suppress_log=False, **kwargs):
-    print('*',item,'*')
-    if item:
-        value = _config(item, cast, **kwargs)
-        global _config_registry
-        _config_registry.append(_ConfigItem(item, value, suppress_log))
-        return value
+    print (item)
+    print(kwargs)
+    value = _config(item, cast, **kwargs)
+    global _config_registry
+    _config_registry.append(_ConfigItem(item, value, suppress_log))
+    return value
 
 
 def log(logger_method):
