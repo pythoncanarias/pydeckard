@@ -5,7 +5,7 @@ build-backend = 'setuptools.build_meta'
 [project]
 name = 'pydeckard'
 description = 'Un bot de Telegram para el canal de Python Canarias'
-requires-python = '>=3.12'
+requires-python = '>=3.10'
 authors = [
     { name = 'Python Canarias', email = 'info@pythoncanarias.es' },
 ]
