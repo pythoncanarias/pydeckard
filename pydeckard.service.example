@@ -1,10 +1,17 @@
 [Unit]
 Description=PyDeckard
+After=network.target
 
 [Service]
+User=el_que_ejecute_el_bot
+Group=el_que_ejecute_el_bot
 Restart=always
-WorkingDirectory=/home/jileon/pydeckard/
-ExecStart=/home/jileon/.pyenv/versions/3.12.4/envs/pydeckard/bin/python bot.py
+WorkingDirectory=/ruta_al_entorno_virtual
+ExecStart=/ruta_al_entorno_virtual/bin/bot
+# La onfiguración del bot puede hacerse:
+    A) Colocando el archivo .env en el WorkingDirectory
+    B) Colocando el archivo .env en cualquier directorio que User pueda leer y declarandolo en
+       EnvironmentFile=/cualquier_directorio/.env
 
 [Install]
 WantedBy=multi-user.target

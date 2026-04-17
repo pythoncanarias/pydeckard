@@ -10,12 +10,13 @@ Telegram Bot made in Python to automate different tasks of [Python Canarias](htt
 ## Installation
 
 Create a virtualenv for Python3 and install dependencies. In this
-example we are using pyenv:
+example we are using python -m venv:
 
 ~~~console
-$ pyenv virtualenv 3.12.4 pydeckard
-$ pyenv activate pydeckard
-$ pip install -r requirements.txt
+$ python -m venv pydeckard
+$ cd pydeckard
+$ source ./bin/activate
+$ ./bin/pip install git+https://github.com/misanram/pydeckard.git@Instalar-desde-GitHub
 ~~~
 
 A developer needs to install a few more packages:

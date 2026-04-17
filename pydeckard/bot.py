@@ -187,7 +187,9 @@ class DeckardBot():
         self.trace('Bot is ready')
         application.run_polling(poll_interval=config.POLL_INTERVAL)
 
-
-if __name__ == "__main__":
+def main():
     bot = DeckardBot()
     bot.run()
+
+if __name__ == "__main__":
+    main()
