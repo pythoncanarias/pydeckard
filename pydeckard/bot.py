@@ -21,7 +21,6 @@ class DeckardBot():
     def __init__(self):
         self.get_options()
         self.set_logger()
-        self.verbose = False
         self.started_at = DateTime.now()
     
     def get_options(self):
@@ -32,7 +31,6 @@ class DeckardBot():
             )
         parser.add_argument('--setup', action='store_true', help='Start the setup wizard')
         args = parser.parse_args()
-        self.verbose = args.verbose
         if args.setup:
             utils.setup_bot()
 
