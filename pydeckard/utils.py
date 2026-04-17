@@ -145,7 +145,7 @@ def setup_bot():
     env_path = root_path / '.env'
 
     system_name = platform.system()
-    print(f"--- Asistente de configuración para PyDeckard (SO: {system_name}) ---")
+    print(f'--- Asistente de configuración para PyDeckard (SO: {system_name}) ---')
 
     token = input('Introduzca el Token del Bot: ')
     welcome_delay = input('Introduzca el retardo para la bienvenida: ')
@@ -157,6 +157,7 @@ def setup_bot():
     verbosity = input('Nivel de verbosidad: ')
 
     with open(env_path, 'w') as f:
+        f.write(f'TELEGRAM_BOT_TOKEN={token}\n')
         f.write(f'VERBOSITY={verbosity}\n')
         f.write(f'LOG_LEVEL={log_level}\n')
         f.write(f'POLL_INTERVAL={poll_interval}\n')
@@ -165,70 +166,57 @@ def setup_bot():
         f.write(f'CHINESE_CHARS={chinese_chars}\n')
         f.write(f'WELCOME_DELAY={welcome_delay}\n')
 
-
-
-
-
     MAXLEN_FOR_USERNAME_TO_TREAT_AS_HUMAN = 100
     CHINESE_CHARS_MAX_PERCENT = 0.15
-
-
-
-
-
-
-
-
-
-
 
     print(f"✅ Archivo .env creado en {root_path}")
 
     if system_name == "Linux":
-        setup_linux(root_path, bot_executable)
+        stat_info = root_path.stat()
 
+        user_name = pwd.getpwuid(stat_info.st_uid).pw_name
+        group_name = grp.getgrgid(stat_info.st_gid).gr_name
 
+        service_path = root_path / 'pydeckard.service'
 
-    stat_info = root_path.stat()
+        service_content = f"""[Unit]
+        Description=PyDeckard
+        After=network.target
+    
+        [Service]
+        Type=simple
+        User={user_name}
+        Group={group_name}
+        WorkingDirectory={root_path}
+        ExecStart={bot_executable}
+        Environment=PYTHONUNBUFFERED=1
+        Restart=always
+    
+        [Install]
+        WantedBy=multi-user.target
+        Alias=PyDeckard.service
+        """
 
-    user_name = pwd.getpwuid(stat_info.st_uid).pw_name
-    group_name = grp.getgrgid(stat_info.st_gid).gr_name
+        with open(service_path, 'w') as f:
+            f.write(service_content)
 
-    # Archivos destino
+        print(f'✅ Archivo pydeckard.service creado en {root_path}')
+        print('\nA continuación debe copiar el archivo pydeckard.service a /etc/systemd/system/, activar el '
+              'servicio y ejecutarlo')
+        print(f'sudo cp {service_path} /etc/systemd/system/')
+        print('sudo systemctl daemon-reload')
+        print('sudo systemctl enable --now pydeckard')
 
-    service_path = root_path / 'pydeckard.service'
+        sys.exit(0)
 
+    elif system_name == 'Darwin':
+        print('ℹ️ Entorno macOS detectado, lo tiene configurado, pregúntele a Apple® como arrancarlo.')
+        sys.exit(1)
 
+    elif system_name == 'Windows':
+        print('ℹ️ Entorno Windows detectado, lo tiene configurado, pregúntele a Microsoft® como arrancarlo.')
+        sys.exit(1)
 
-
-
-
-    service_content = f"""[Unit]
-    Description=PyDeckard
-    After=network.target
-
-    [Service]
-    Type=simple
-    User={user_name}
-    Group={group_name}
-    WorkingDirectory={root_path}
-    ExecStart={bot_executable}
-    Environment=PYTHONUNBUFFERED=1
-    Restart=always
-
-    [Install]
-    WantedBy=multi-user.target
-    Alias=PyDeckard.service
-    """
-
-    with open(service_path, 'w') as f:
-        f.write(service_content)
-
-    print(f'✅ Archivo pydeckard.service creado en {root_path}')
-    print('\nA continuación debe copiar el archivo pydeckard.service a /etc/systemd/system/, activar el '
-          'servicio y ejecutarlo')
-    print(f'sudo cp {service_path} /etc/systemd/system/')
-    print('sudo systemctl daemon-reload')
-    print('sudo systemctl enable --now pydeckard')
-
-    sys.exit(0)
+    elif system_name == 'Java':
+        print('ℹ️ Entorno Jython detectado. Hágaselo mirar.')
+        sys.exit(1)
