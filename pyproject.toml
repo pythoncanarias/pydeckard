@@ -20,6 +20,7 @@ classifiers = [
 license = "GPL-3.0-or-later"
 license-files = ["LICENSE"]
 dynamic = ['dependencies', 'readme']
+version="0.1.0"
 
 [project.urls]
 Homepage = "https://github.com/pythoncanarias/pydeckard.git"
