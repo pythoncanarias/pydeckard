@@ -34,13 +34,19 @@ $ echo 'TELEGRAM_BOT_TOKEN = "<token of your dev bot>"' > .env
 Now you can launch the bot with:
 
 ~~~console
-$ python bot.py
+$ python3 bot.py
 ~~~
 
-You can use the flag `--verbose` (or `-v') to get more information in rhe console:
+~~~systemd
+
+
+
+
+
+You can use the flag `--verbose` (or `-v') to get more information in the console:
 
 ~~~console
-$ python bot.py --verbose
+$ python3 bot.py --verbose
 ~~~
 
 
@@ -49,5 +55,5 @@ $ python bot.py --verbose
 Use pytest:
 
 ~~~console
-$ python -m pytest
+$ python3 -m pytest
 ~~~
