@@ -18,7 +18,7 @@ class _ConfigItem(NamedTuple):
 
 
 def config(item, cast=lambda v: v, suppress_log=False, **kwargs):
-    value = _config(item, cast, **kwargs)
+    value = _config(item.strip(), cast, **kwargs)
     global _config_registry
     _config_registry.append(_ConfigItem(item, value, suppress_log))
     return value
