@@ -145,29 +145,22 @@ def setup_bot():
     env_path = root_path / '.env'
 
     system_name = platform.system()
+
     print(f'--- Asistente de configuración para PyDeckard (SO: {system_name}) ---')
 
-    token = input('Introduzca el Token del Bot: ')
-    welcome_delay = input('Introduzca el retardo para la bienvenida: ')
-    chinese_chars = input('Porcentaje de caracteres chinos en username (0.0-1.0): ')
-    username_length = input('Longitud máxima del username: ')
-    greeting = input('Saludo del bot: ')
-    poll_interval = input('Intervalo de polling para la API de Telegram: ')
-    log_level = input('Nivel de registro de logs: ')
-    verbosity = input('Nivel de verbosidad: ')
+    items_env = {"TELEGRAM_BOT_TOKEN": input("Introduzca el Token del Bot: "),
+                 "VERBOSITY": input("Nivel de verbosidad: "),
+                 "LOG_LEVEL": input("Nivel de registro de logs: "),
+                 'POLL_INTERVAL': input('Intervalo de polling para la API de Telegram: '),
+                 'BOT_GREETING': input('Saludo del bot: '),
+                 'MAX_HUMAN_USERNAME_LENGTH': input('Longitud máxima del username: '),
+                 'CHINESE_CHARS': input('Porcentaje de caracteres chinos en username (0.0-1.0): '),
+                 'WELCOME_DELAY': input('Introduzca el retardo para la bienvenida: '),
+                 }
 
-    with open(env_path, 'w') as f:
-        f.write(f'TELEGRAM_BOT_TOKEN={token}\n')
-        f.write(f'VERBOSITY={verbosity}\n')
-        f.write(f'LOG_LEVEL={log_level}\n')
-        f.write(f'POLL_INTERVAL={poll_interval}\n')
-        f.write(f'BOT_GREETING ={greeting}\n')
-        f.write(f'MAX_HUMAN_USERNAME_LENGTH={username_length}\n')
-        f.write(f'CHINESE_CHARS={chinese_chars}\n')
-        f.write(f'WELCOME_DELAY={welcome_delay}\n')
-
-    MAXLEN_FOR_USERNAME_TO_TREAT_AS_HUMAN = 100
-    CHINESE_CHARS_MAX_PERCENT = 0.15
+    with open(env_path, 'w') as fout:
+        lines = [f'{key}={value}\n' for key, value in items_env.items() if value.strip()]
+        fout.writelines(lines)
 
     print(f"✅ Archivo .env creado en {root_path}")
 
