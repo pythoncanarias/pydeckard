@@ -230,18 +230,18 @@ def setup_bot():
 
     [Install]
     WantedBy=multi-user.target
-    Alias=PyDeckard.serviceget
+    Alias=PyDeckard.service
     """
 
     with open(service_path, 'w') as f:
         f.write(service_content)
 
     print(f'✅ Archivo pydeckard.service creado en {root_path}')
-    print('\nA continuación debe copiar el archivo pydeckard.service a /etc/systemd/system/, activiar el '
+    print('\nA continuación debe copiar el archivo pydeckard.service a /etc/systemd/system/, activar el '
           'servicio y ejecutarlo')
-    print(f'1. sudo cp {service_path} /etc/systemd/system/')
-    print('2. sudo systemctl daemon-reload')
-    print('3. sudo systemctl enable --now pydeckard')
+    print(f'sudo cp {service_path} /etc/systemd/system/')
+    print('sudo systemctl daemon-reload')
+    print('sudo systemctl enable --now pydeckard')
 
     sys.exit(0)
 
