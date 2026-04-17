@@ -1,7 +1,12 @@
 import functools
 import datetime
+import grp
+import platform
+import pwd
 import random
 import re
+import sys
+from pathlib import Path
 from typing import Tuple, Optional, NamedTuple
 
 from telegram import User
@@ -126,3 +131,104 @@ def since(reference) -> str:
     seconds %= 60
     buff.append(f"{seconds} {pluralise(seconds, 'second')}")
     return " ".join(buff)
+
+def setup_bot():
+    """
+    Arranca un asistente para la configuración del bot y la creación de un sistema de arranque automáquico
+    por el sistema operativo
+    """
+
+    root_path = Path(sys.prefix)
+    bin_path = Path(sys.executable).parent
+    bot_executable = bin_path / 'bot'
+
+    env_path = root_path / '.env'
+
+    system_name = platform.system()
+    print(f"--- Asistente de configuración para PyDeckard (SO: {system_name}) ---")
+
+    token = input('Introduzca el Token del Bot: ')
+    welcome_delay = input('Introduzca el retardo para la bienvenida: ')
+    chinese_chars = input('Porcentaje de caracteres chinos en username (0.0-1.0): ')
+    username_length = input('Longitud máxima del username: ')
+    greeting = input('Saludo del bot: ')
+    poll_interval = input('Intervalo de polling para la API de Telegram: ')
+    log_level = input('Nivel de registro de logs: ')
+    verbosity = input('Nivel de verbosidad: ')
+
+    with open(env_path, 'w') as f:
+        f.write(f'VERBOSITY={verbosity}\n')
+        f.write(f'LOG_LEVEL={log_level}\n')
+        f.write(f'POLL_INTERVAL={poll_interval}\n')
+        f.write(f'BOT_GREETING ={greeting}\n')
+        f.write(f'MAX_HUMAN_USERNAME_LENGTH={username_length}\n')
+        f.write(f'CHINESE_CHARS={chinese_chars}\n')
+        f.write(f'WELCOME_DELAY={welcome_delay}\n')
+
+
+
+
+
+    MAXLEN_FOR_USERNAME_TO_TREAT_AS_HUMAN = 100
+    CHINESE_CHARS_MAX_PERCENT = 0.15
+
+
+
+
+
+
+
+
+
+
+
+    print(f"✅ Archivo .env creado en {root_path}")
+
+    if system_name == "Linux":
+        setup_linux(root_path, bot_executable)
+
+
+
+    stat_info = root_path.stat()
+
+    user_name = pwd.getpwuid(stat_info.st_uid).pw_name
+    group_name = grp.getgrgid(stat_info.st_gid).gr_name
+
+    # Archivos destino
+
+    service_path = root_path / 'pydeckard.service'
+
+
+
+
+
+
+    service_content = f"""[Unit]
+    Description=PyDeckard
+    After=network.target
+
+    [Service]
+    Type=simple
+    User={user_name}
+    Group={group_name}
+    WorkingDirectory={root_path}
+    ExecStart={bot_executable}
+    Environment=PYTHONUNBUFFERED=1
+    Restart=always
+
+    [Install]
+    WantedBy=multi-user.target
+    Alias=PyDeckard.service
+    """
+
+    with open(service_path, 'w') as f:
+        f.write(service_content)
+
+    print(f'✅ Archivo pydeckard.service creado en {root_path}')
+    print('\nA continuación debe copiar el archivo pydeckard.service a /etc/systemd/system/, activar el '
+          'servicio y ejecutarlo')
+    print(f'sudo cp {service_path} /etc/systemd/system/')
+    print('sudo systemctl daemon-reload')
+    print('sudo systemctl enable --now pydeckard')
+
+    sys.exit(0)

@@ -1,13 +1,10 @@
 #!/usr/bin/enb python3
-import os
 from datetime import datetime as DateTime
 import itertools
 import argparse
 import logging
 import sys
 import time
-from logging.handlers import RotatingFileHandler
-from pathlib import Path
 
 import telegram
 from telegram import Update
@@ -33,25 +30,20 @@ class DeckardBot():
             description='PyDeckard Bot',
             epilog='Text at the bottom of help',
             )
-        parser.add_argument('-v', '--verbose', action='store_true')
         parser.add_argument('--setup', action='store_true', help='Start the setup wizard')
         args = parser.parse_args()
         self.verbose = args.verbose
         if args.setup:
-            setup_bot()
+            utils.setup_bot()
 
     def set_logger(self):
         self.logger = logging.getLogger('bot')
 
-        file_handler = RotatingFileHandler('bot.log', maxBytes=1_000_000, backupCount=5)
-        console_handler = logging.NullHandler()
-        if self.verbose:
-            console_handler = logging.StreamHandler()
-
+        console_handler = logging.StreamHandler()
         logging.basicConfig(
-                level=logging.WARNING,  # Pone el nivel de todos los logger a WARNING
+                level=logging.DEBUG,  # Pone el nivel de todos los logger a WARNING
                 format='%(asctime)s [%(name)s] %(levelname)s: %(message)s',
-                handlers=[file_handler,console_handler],
+                handlers=[console_handler],
                 force=True
                 )
 
@@ -61,8 +53,6 @@ class DeckardBot():
 
     def trace(self, msg):
         self.logger.info(msg)
-
-
 
 
     async def command_status(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -195,55 +185,6 @@ class DeckardBot():
         self.trace('Bot is ready')
         application.run_polling(poll_interval=config.POLL_INTERVAL)
 
-def setup_bot():
-    """
-    Arranca un asistente para la configuración del bot
-    """
-
-    root_path = Path(sys.prefix)
-    bin_path = Path(sys.executable).parent
-    bot_executable = bin_path / 'bot'
-
-    # Archivos destino
-    env_path = root_path / '.env'
-    service_path = root_path / 'pydeckard.service'
-
-    print(f'--- Configuración Automática PyDeckard (Raíz: {root_path}) ---')
-
-    token = input('Introduzca el Token del Bot: ')
-
-    with open(env_path, 'w') as f:
-        f.write(f'TELEGRAM_BOT_TOKEN={token}\n')
-    print(f"✅ Archivo .env creado en {root_path}")
-
-    user_name = os.getlogin()
-    service_content = f"""[Unit]
-    Description=PyDeckard
-    After=network.target
-
-    [Service]
-    Type=simple
-    User={user_name}
-    WorkingDirectory={root_path}
-    ExecStart={bot_executable}
-    Restart=always
-
-    [Install]
-    WantedBy=multi-user.target
-    Alias=PyDeckard.service
-    """
-
-    with open(service_path, 'w') as f:
-        f.write(service_content)
-
-    print(f'✅ Archivo pydeckard.service creado en {root_path}')
-    print('\nA continuación debe copiar el archivo pydeckard.service a /etc/systemd/system/, activar el '
-          'servicio y ejecutarlo')
-    print(f'sudo cp {service_path} /etc/systemd/system/')
-    print('sudo systemctl daemon-reload')
-    print('sudo systemctl enable --now pydeckard')
-
-    sys.exit(0)
 
 def main():
     bot = DeckardBot()
