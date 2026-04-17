@@ -38,7 +38,7 @@ class DeckardBot():
         args = parser.parse_args()
         self.verbose = args.verbose
         if args.setup:
-            self.setup()
+            setup_bot()
 
     def set_logger(self):
         self.logger = logging.getLogger('bot')
@@ -195,7 +195,7 @@ class DeckardBot():
         self.trace('Bot is ready')
         application.run_polling(poll_interval=config.POLL_INTERVAL)
 
-def setup(self):
+def setup_bot():
     """
     Arranca un asistente para la configuración del bot
     """
