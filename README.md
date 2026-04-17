@@ -22,7 +22,7 @@ $ ./bin/pip install git+https://github.com/misanram/pydeckard.git@Instalar-desde
 A developer needs to install a few more packages:
 
 ~~~console
-$ pip install -r dev-requirements.txt
+$ ./bin/pip install git+https://github.com/misanram/pydeckard.git@Instalar-desde-GitHub[dev]
 ~~~
 
 Next step is to set your bot token for development:
