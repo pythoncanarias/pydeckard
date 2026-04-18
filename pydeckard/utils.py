@@ -134,15 +134,14 @@ def since(reference) -> str:
 
 
 def _input(prompt_head, acceptable=None, typus=None):
-    """ Esta función está pensada para capturar los aprámetros que se van a usar para configurar el bot.
-    Realiza un input y valida eldato obtenido.
-    Pasos:
-        Crea una cadena de texto para usarla como proompt.
-        Pide el dato (input)
-        Valida el dato recibido
-        Devulve el dato validado o None
-
-    Se puede interrumpir la captura de parámetros con Ctrl+C
+    """ This function is designed to capture the parameters that will be used to configure the bot.
+    It captures input and validates the data obtained.
+    Steps:
+        Create a text string to use as a prompt.
+        Request the input.
+        Validate the received data.
+        Return the validated data or None.
+    Parameter capture can be interrupted with Ctrl+C
     """
 
     prompt_tail = ''
@@ -181,16 +180,14 @@ def _input(prompt_head, acceptable=None, typus=None):
 
 
 def setup_bot():
-    """ Arranca un asistente para la configuración del bot y la creación de un sistema de arranque automático
-    en funcíon del sistema operativo.
-
-    Realiza un input por cada parámetro de configuración necesario.
-    La lista "parameters" contiene todos los parámetros definidos cada uno como una tupla de 4 elementos:
-        nombre del parámetro,
-        prompt para el input,
-        una tupla con dos valores para indicar un rango de valores admitidos OR una lista con valores para
-        indicar las distintas opciones admitidas OR None,
-        una clase para hacer el cast con tipo de valor admitido
+    """ A wizard starts to configure the bot and create an automatic startup system based on the operating system.
+    It performs an input for each required configuration parameter.
+    The "parameters" list contains all the defined parameters, each as a tuple of four elements:
+        parameter name,
+        prompt for input,
+        a tuple with two values to indicate a range of allowed values OR a list with values to indicate the
+        different allowed options OR None,
+        a class to cast the value to the allowed type
     """
 
     root_path = Path(sys.prefix)
