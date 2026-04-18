@@ -1,11 +1,3 @@
-*.pyc
-pycache
-myconfig.py
-virtualenv
-.idea
-.vscode
-.DS_Store
+.atico/
 .env
-.pytest_cache
-.python-version
 bot.log
