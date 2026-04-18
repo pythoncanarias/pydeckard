@@ -18,7 +18,7 @@ classifiers = [
 ]
 license = "GPL-3.0-or-later"
 license-files = ["LICENSE"]
-dynamic = ['dependencies', 'readme']
+dynamic = ['dependencies', 'readme', 'optional-dependencies']
 version="0.1.0"
 
 [project.urls]

@@ -9,7 +9,7 @@ Telegram Bot made in Python to automate different tasks of [Python Canarias](htt
 
 ## Installation
 
-Create a virtualenv for Python3 and install dependencies.
+Create a virtualenv for Python3 and install bot.
 
 ~~~console
 $ python3 -m venv /path/to/new/virtual/environment
@@ -22,7 +22,7 @@ As a developer, you must install it in this other way:
 
 ~~~console
 $ git clone https://github.com/pythoncanarias/pydeckard.git
-cd pydeckard
+$ cd pydeckard
 $ python3 -m venv venv
 $ source ./venv/bin/activate
 $ pip3 install -e .[dev]

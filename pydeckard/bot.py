@@ -188,6 +188,14 @@ class DeckardBot():
         application.run_polling(poll_interval=config.POLL_INTERVAL)
 
 
-if __name__ == "__main__":
+def main():
+    """
+    Arranca el bot
+    """
+
     bot = DeckardBot()
     bot.run()
+
+
+if __name__ == "__main__":
+    main()
