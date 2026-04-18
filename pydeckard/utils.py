@@ -133,8 +133,9 @@ def since(reference) -> str:
     return " ".join(buff)
 
 
-def _input(prompt_head, acceptable=None, typus=None):
-    """ This function is designed to capture the parameters that will be used to configure the bot.
+def validate_input(prompt_head, acceptable=None, typus=None):
+    """
+    This function is designed to capture the parameters that will be used to configure the bot.
     It captures input and validates the data obtained.
     Steps:
         Create a text string to use as a prompt.
@@ -142,6 +143,14 @@ def _input(prompt_head, acceptable=None, typus=None):
         Validate the received data.
         Return the validated data or None.
     Parameter capture can be interrupted with Ctrl+C
+
+    Arguments
+        prompt_head (str): Start of the message to be displayed to the user.
+        acceptable (list/tuple, optional): Whitelist of values or range (min, max).
+        typus (callable): Data type to convert the input to.
+
+    Return
+        The data validated and converted to type 'typus' or None
     """
 
     prompt_tail = ''
@@ -149,7 +158,7 @@ def _input(prompt_head, acceptable=None, typus=None):
     if isinstance(acceptable, list):
         prompt_tail = f" ({'/'.join(map(str, acceptable))})"
     elif isinstance(acceptable, tuple):
-        prompt_tail = f" ({acceptable[0]}-{acceptable[1]})"
+        prompt_tail = f' ({acceptable[0]}-{acceptable[1]})'
 
     prompt = f'{prompt_head}{prompt_tail}: '
 
@@ -158,29 +167,38 @@ def _input(prompt_head, acceptable=None, typus=None):
             data = input(prompt).strip()
         except KeyboardInterrupt:
             raise
-        if not (data and typus):
+
+        if not (data and callable(typus)):
             return None
 
         try:
-            data = typus(data)
+            if typus is int:
+                data = int(data, 0)
+            elif typus is str and acceptable and all(x.isupper() for x in acceptable):
+                data = data.upper()
+            elif typus is str or typus is float:
+                data = typus(data)
+            else:
+                return None
         except ValueError:
-            print(f'Error: El valor debe ser de tipo {typus.__name__}')
+            print(f'El valor debe ser de tipo {typus.__name__}')
             continue
 
         if isinstance(acceptable, list) and data not in acceptable:
-            print(f'Error: El valor debe ser una de estas opciones: {acceptable}')
+            print(f'El valor debe ser una de estas opciones: {'/'.join(map(str, acceptable))}')
             continue
 
         if isinstance(acceptable, tuple):
             if not (acceptable[0] <= data <= acceptable[1]):
-                print(f'Error: El valor debe estar entre {acceptable[0]} y {acceptable[1]}.')
+                print(f'El valor debe estar entre {acceptable[0]} y {acceptable[1]}.')
                 continue
 
-        return str(data)
+        return data
 
 
 def setup_bot():
-    """ A wizard starts to configure the bot and create an automatic startup system based on the operating system.
+    """
+    A wizard starts to configure the bot and create an automatic startup system based on the operating system.
     It performs an input for each required configuration parameter.
     The "parameters" list contains all the defined parameters, each as a tuple of four elements:
         parameter name,
@@ -196,20 +214,21 @@ def setup_bot():
     env_path = root_path / '.env'
     system_name = platform.system()
 
-    print(f'--- Asistente de configuración para PyDeckard (SO: {system_name}) ---')
+    print(f'\n--- Asistente de configuración para PyDeckard (SO: {system_name}) ---\n\n')
 
     parameters = [('TELEGRAM_BOT_TOKEN', 'Introduzca el Token del Bot', None, str),
                   ('VERBOSITY', 'Nivel de verbosidad', (0.0, 1.0), float),
                   ('LOG_LEVEL', 'Nivel de registro de logs', ['DEBUG', 'INFO', 'WARNING', 'ERROR'], str),
-                  ('POLL_INTERVAL', 'Intervalo de polling para la API de Telegram', (1,10), int),
+                  ('POLL_INTERVAL', 'Intervalo de polling para la API de Telegram', (1, 10), int),
                   ('BOT_GREETING', 'Saludo del bot', None, str),
                   ('MAX_HUMAN_USERNAME_LENGTH', 'Longitud máxima del username', None, int),
-                  ('CHINESE_CHARS', 'Porcentaje de caracteres chinos en username', (0.0, 1.0), float),
-                  ('CHINESE_CHARS', 'Tiempo de retardo para la bienvenida (seg)', None, int),
+                  ('MAX_CHINESE_CHARS_PERCENT', 'Máximo porcentaje de caracteres chinos en username', (0.0,
+                                                                                                       1.0), float),
+                  ('WELCOME_DELAY', 'Tiempo de retardo para la bienvenida (seg)', None, int),
                   ]
 
     try:
-        items_env = {key: _input(*args) for key, *args in parameters}
+        items_env = {key: validate_input(*args) for key, *args in parameters}
     except KeyboardInterrupt:
         print('Asistente cancelado por el usuario.')
         sys.exit(1)
