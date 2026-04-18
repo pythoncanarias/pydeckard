@@ -1,7 +1,6 @@
 import pytest
 
-import config
-import utils
+from pydeckard import config, utils
 
 
 @pytest.fixture()

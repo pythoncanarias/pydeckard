@@ -13,8 +13,8 @@ from telegram import Update
 from telegram.ext import ApplicationBuilder, filters, MessageHandler, CommandHandler, ContextTypes
 from telegram.constants import ParseMode
 
-import config
-import utils
+from pydeckard import config
+from pydeckard import utils
 
 
 class DeckardBot():

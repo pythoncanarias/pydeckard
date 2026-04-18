@@ -6,7 +6,7 @@ import datetime
 import pytest
 from freezegun import freeze_time
 
-import utils
+from pydeckard import utils
 
 
 @freeze_time("2019-05-16 13:35:16")
