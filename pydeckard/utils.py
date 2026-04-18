@@ -5,7 +5,7 @@ import re
 from typing import Tuple, Optional, NamedTuple
 
 from telegram import User
-import config
+from pydeckard import config
 
 
 def is_chinese(c):
