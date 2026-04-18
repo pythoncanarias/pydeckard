@@ -28,7 +28,8 @@ $ source ./venv/bin/activate
 $ pip3 install -e .[dev]
 ~~~
 
-Next step is to set your bot token for development:
+Next step is to set your bot token for development.
+In the same directory where bot.py lives, you must create the .env file using the following command:
 
 ~~~console
 $ echo 'TELEGRAM_BOT_TOKEN = "<token of your dev bot>"' > .env
@@ -37,13 +38,13 @@ $ echo 'TELEGRAM_BOT_TOKEN = "<token of your dev bot>"' > .env
 Now you can launch the bot with:
 
 ~~~console
-$ python bot.py
+$ python3 bot.py
 ~~~
 
 You can use the flag `--verbose` (or `-v') to get more information in rhe console:
 
 ~~~console
-$ python bot.py --verbose
+$ python3 bot.py --verbose
 ~~~
 
 
@@ -52,5 +53,5 @@ $ python bot.py --verbose
 Use pytest:
 
 ~~~console
-$ python -m pytest
+$ python3 -m pytest
 ~~~
