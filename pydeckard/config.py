@@ -103,7 +103,7 @@ REPLIES = {
     ("elixir",): "BIBA ELICSÍR!! ¥",
     ("cobol",): "BIBA KOBOL!! 💾",
     ("fortran",): "BIBA FORRRTRÁN!! √",
-    ("c\+\+",): "BIBA CEMASMÁS!! ⊕",
+    ("c++",): "BIBA CEMASMÁS!! ⊕",
     ("javascript",): "BIBA JABAESCRIP!! 🔮",
     ("php",): "BIBA PEACHEPÉ!.! ⛱",
     ("perl",): "BIBA PERRRRRL! 🐫",
