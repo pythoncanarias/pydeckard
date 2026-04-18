@@ -19,11 +19,14 @@ from pydeckard import config
 class DeckardBot():
 
     def __init__(self):
+        print(1)
         self.get_options()
+        1 / 0
         self.set_logger()
         self.started_at = DateTime.now()
     
     def get_options(self):
+        print(2)
         parser = argparse.ArgumentParser(
             prog='bot',
             description='PyDeckard Bot',
@@ -33,6 +36,7 @@ class DeckardBot():
         args = parser.parse_args()
         if args.setup:
             utils.setup_bot()
+
 
     def set_logger(self):
         self.logger = logging.getLogger('bot')

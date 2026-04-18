@@ -18,8 +18,6 @@ class _ConfigItem(NamedTuple):
 
 
 def config(item, cast=lambda v: v, suppress_log=False, **kwargs):
-    print (item)
-    print(kwargs)
     value = _config(item, cast, **kwargs)
     global _config_registry
     _config_registry.append(_ConfigItem(item, value, suppress_log))
@@ -105,7 +103,7 @@ REPLIES = {
     ("elixir",): "BIBA ELICSÍR!! ¥",
     ("cobol",): "BIBA KOBOL!! 💾",
     ("fortran",): "BIBA FORRRTRÁN!! √",
-    ("c\+\+",): "BIBA CEMASMÁS!! ⊕",
+    (r"c\+\+",): "BIBA CEMASMÁS!! ⊕",
     ("javascript",): "BIBA JABAESCRIP!! 🔮",
     ("php",): "BIBA PEACHEPÉ!.! ⛱",
     ("perl",): "BIBA PERRRRRL! 🐫",

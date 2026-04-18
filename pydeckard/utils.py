@@ -52,7 +52,7 @@ def is_bot(user: User):
     score/weight of the probability of being a bot.
 
     :param user: The new User
-    :type user: User
+    :typus user: User
     :return: True if the new user is considered a bot (according to our rules)
     :rtype: bool
     """
@@ -132,10 +132,63 @@ def since(reference) -> str:
     buff.append(f"{seconds} {pluralise(seconds, 'second')}")
     return " ".join(buff)
 
+
+def _input(prompt_head, acceptable=None, typus=None):
+    """ Esta función realiza un input, para lo que crea un prompt, hace el input y comprueba que el valor
+    recibido sea aceptable en función de los parámetros que se le han pasado.
+
+
+    """
+
+    prompt_tail = ''
+
+    if isinstance(acceptable, list):
+        prompt_tail = f" ({'/'.join(map(str, acceptable))})"
+    elif isinstance(acceptable, tuple):
+        prompt_tail = f" ({acceptable[0]}-{acceptable[1]})"
+
+    prompt = f'{prompt_head}{prompt_tail}: '
+
+    while True:
+        try:
+            data = input(prompt).strip()
+        except KeyboardInterrupt:
+            print("\nCancelado")
+            break
+        if not (data and typus):
+            return None
+
+        try:
+            data = typus(data)
+        except ValueError:
+            print(f'❌ Error: El valor debe ser de tipo {typus.__name__}')
+            continue
+
+        if isinstance(acceptable, list) and data not in acceptable:
+            print(f'❌ Error: Debe ser una de estas opciones: {acceptable}')
+            continue
+
+        if isinstance(acceptable, tuple):
+            if not (acceptable[0] <= data <= acceptable[1]):
+                print(f'❌ Error: Debe estar entre {acceptable[0]} y {acceptable[1]}.')
+                continue
+
+        return str(data)
+
+
 def setup_bot():
     """
-    Arranca un asistente para la configuración del bot y la creación de un sistema de arranque automáquico
-    por el sistema operativo
+    Arranca un asistente para la configuración del bot y la creación de un sistema de arranque automático
+    en funcíon del sistema operativo del usuario.
+
+    Realiza un input por cada parámetro de configuración necesario.
+    La lista parameters contiene todos los parámetros para los que hay que hacer un input, definidos cada
+    uno como una tupla de 4 elementos:
+        nombre del parámetro,
+        prompt para el input,
+        una tupla con dos valores para indicar un rango de valores admitidos OR una lista con valores para
+        indicar las distintas opciones admitidas OR None,
+        una calse para indicar el tipo de valor admitido
     """
 
     root_path = Path(sys.prefix)
@@ -148,15 +201,17 @@ def setup_bot():
 
     print(f'--- Asistente de configuración para PyDeckard (SO: {system_name}) ---')
 
-    items_env = {"TELEGRAM_BOT_TOKEN": input("Introduzca el Token del Bot: "),
-                 "VERBOSITY": input("Nivel de verbosidad: "),
-                 "LOG_LEVEL": input("Nivel de registro de logs: "),
-                 'POLL_INTERVAL': input('Intervalo de polling para la API de Telegram: '),
-                 'BOT_GREETING': input('Saludo del bot: '),
-                 'MAX_HUMAN_USERNAME_LENGTH': input('Longitud máxima del username: '),
-                 'CHINESE_CHARS': input('Porcentaje de caracteres chinos en username (0.0-1.0): '),
-                 'WELCOME_DELAY': input('Introduzca el retardo para la bienvenida: '),
-                 }
+    parameters = [('TELEGRAM_BOT_TOKEN', 'Introduzca el Token del Bot', None, str),
+                  ('VERBOSITY', 'Nivel de verbosidad', (0.0, 1.0), float),
+                  ('LOG_LEVEL', 'Nivel de registro de logs', ['DEBUG', 'INFO', 'WARNING', 'ERROR'], str),
+                  ('POLL_INTERVAL', 'Intervalo de polling para la API de Telegram', (1,10), int),
+                  ('BOT_GREETING', 'Saludo del bot', None, str),
+                  ('MAX_HUMAN_USERNAME_LENGTH', 'Longitud máxima del username', None, int),
+                  ('CHINESE_CHARS', 'Porcentaje de caracteres chinos en username', (0.0, 1.0), float),
+                  ('CHINESE_CHARS', 'Tiempo de retardo para la bienvenida (seg)', None, int),
+                  ]
+
+    items_env = {key: _input(*args) for key, *args in parameters}
 
     with open(env_path, 'w') as fout:
         lines = [f'{key}={value}\n' for key, value in items_env.items() if value.strip()]
