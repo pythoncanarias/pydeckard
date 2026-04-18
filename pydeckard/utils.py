@@ -153,8 +153,7 @@ def _input(prompt_head, acceptable=None, typus=None):
         try:
             data = input(prompt).strip()
         except KeyboardInterrupt:
-            print("\nCancelado")
-            break
+            raise
         if not (data and typus):
             return None
 
@@ -211,7 +210,11 @@ def setup_bot():
                   ('CHINESE_CHARS', 'Tiempo de retardo para la bienvenida (seg)', None, int),
                   ]
 
-    items_env = {key: _input(*args) for key, *args in parameters}
+    try:
+        items_env = {key: _input(*args) for key, *args in parameters}
+    except KeyboardInterrupt:
+        pass
+
 
     with open(env_path, 'w') as fout:
         lines = [f'{key}={value}\n' for key, value in items_env.items() if value.strip()]
