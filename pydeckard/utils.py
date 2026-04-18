@@ -134,10 +134,15 @@ def since(reference) -> str:
 
 
 def _input(prompt_head, acceptable=None, typus=None):
-    """ Esta función realiza un input, para lo que crea un prompt, hace el input y comprueba que el valor
-    recibido sea aceptable en función de los parámetros que se le han pasado.
+    """ Esta función está pensada para capturar los aprámetros que se van a usar para configurar el bot.
+    Realiza un input y valida eldato obtenido.
+    Pasos:
+        Crea una cadena de texto para usarla como proompt.
+        Pide el dato (input)
+        Valida el dato recibido
+        Devulve el dato validado o None
 
-
+    Se puede interrumpir la captura de parámetros con Ctrl+C
     """
 
     prompt_tail = ''
@@ -160,42 +165,38 @@ def _input(prompt_head, acceptable=None, typus=None):
         try:
             data = typus(data)
         except ValueError:
-            print(f'❌ Error: El valor debe ser de tipo {typus.__name__}')
+            print(f'Error: El valor debe ser de tipo {typus.__name__}')
             continue
 
         if isinstance(acceptable, list) and data not in acceptable:
-            print(f'❌ Error: Debe ser una de estas opciones: {acceptable}')
+            print(f'Error: El valor debe ser una de estas opciones: {acceptable}')
             continue
 
         if isinstance(acceptable, tuple):
             if not (acceptable[0] <= data <= acceptable[1]):
-                print(f'❌ Error: Debe estar entre {acceptable[0]} y {acceptable[1]}.')
+                print(f'Error: El valor debe estar entre {acceptable[0]} y {acceptable[1]}.')
                 continue
 
         return str(data)
 
 
 def setup_bot():
-    """
-    Arranca un asistente para la configuración del bot y la creación de un sistema de arranque automático
-    en funcíon del sistema operativo del usuario.
+    """ Arranca un asistente para la configuración del bot y la creación de un sistema de arranque automático
+    en funcíon del sistema operativo.
 
     Realiza un input por cada parámetro de configuración necesario.
-    La lista parameters contiene todos los parámetros para los que hay que hacer un input, definidos cada
-    uno como una tupla de 4 elementos:
+    La lista "parameters" contiene todos los parámetros definidos cada uno como una tupla de 4 elementos:
         nombre del parámetro,
         prompt para el input,
         una tupla con dos valores para indicar un rango de valores admitidos OR una lista con valores para
         indicar las distintas opciones admitidas OR None,
-        una calse para indicar el tipo de valor admitido
+        una clase para hacer el cast con tipo de valor admitido
     """
 
     root_path = Path(sys.prefix)
     bin_path = Path(sys.executable).parent
     bot_executable = bin_path / 'bot'
-
     env_path = root_path / '.env'
-
     system_name = platform.system()
 
     print(f'--- Asistente de configuración para PyDeckard (SO: {system_name}) ---')
@@ -213,16 +214,16 @@ def setup_bot():
     try:
         items_env = {key: _input(*args) for key, *args in parameters}
     except KeyboardInterrupt:
-        pass
-
+        print('Asistente cancelado por el usuario.')
+        sys.exit(1)
 
     with open(env_path, 'w') as fout:
-        lines = [f'{key}={value}\n' for key, value in items_env.items() if value.strip()]
+        lines = [f'{key}={value}\n' for key, value in items_env.items() if value]
         fout.writelines(lines)
 
-    print(f"✅ Archivo .env creado en {root_path}")
+    print(f'\n\nArchivo .env creado en {root_path}')
 
-    if system_name == "Linux":
+    if system_name == 'Linux':
         stat_info = root_path.stat()
 
         user_name = pwd.getpwuid(stat_info.st_uid).pw_name
@@ -251,23 +252,21 @@ def setup_bot():
         with open(service_path, 'w') as f:
             f.write(service_content)
 
-        print(f'✅ Archivo pydeckard.service creado en {root_path}')
-        print('\nA continuación debe copiar el archivo pydeckard.service a /etc/systemd/system/, activar el '
-              'servicio y ejecutarlo')
-        print(f'sudo cp {service_path} /etc/systemd/system/')
+        print(f'\nArchivo pydeckard.service creado en {root_path}')
+        print(f'\nsudo cp {service_path} /etc/systemd/system/')
         print('sudo systemctl daemon-reload')
         print('sudo systemctl enable --now pydeckard')
 
         sys.exit(0)
 
     elif system_name == 'Darwin':
-        print('ℹ️ Entorno macOS detectado, lo tiene configurado, pregúntele a Apple® como arrancarlo.')
+        print('Entorno macOS detectado, configuración realizada, pregúntele a Apple® como arrancarlo.')
         sys.exit(1)
 
     elif system_name == 'Windows':
-        print('ℹ️ Entorno Windows detectado, lo tiene configurado, pregúntele a Microsoft® como arrancarlo.')
+        print('Entorno Windows detectado, configuración realizada, pregúntele a Microsoft® como arrancarlo.')
         sys.exit(1)
 
     elif system_name == 'Java':
-        print('ℹ️ Entorno Jython detectado. Hágaselo mirar.')
+        print('Entorno Jython detectado. Usted mismo.')
         sys.exit(1)
