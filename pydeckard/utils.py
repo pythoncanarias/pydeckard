@@ -210,7 +210,7 @@ def setup_bot():
 
     root_path = Path(sys.prefix)
     bin_path = Path(sys.executable).parent
-    bot_executable = bin_path / 'bot'
+    bot_executable = bin_path / 'pydeckard'
     env_path = root_path / '.env'
     system_name = platform.system()
 

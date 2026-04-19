@@ -38,7 +38,6 @@ To do this, activate the virtual environment and run:
 $ pydeckard --setup
 ~~~
 
-
 You can now launch the bot, activating the virtual environment and running::
 
 ~~~console
