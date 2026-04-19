@@ -32,8 +32,11 @@ class DeckardBot():
             epilog='Text at the bottom of help',
             )
         parser.add_argument('-v', '--verbose', action='store_true')
+        parser.add_argument('--setup', action='store_true', help='Start the setup wizard')
         args = parser.parse_args()
         self.verbose = args.verbose
+        if args.setup:
+            utils.setup_bot()
 
     def set_logger(self):
         self.logger = logging.getLogger('bot')
