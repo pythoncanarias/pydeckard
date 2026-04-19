@@ -44,7 +44,13 @@ You can now launch the bot, activating the virtual environment and running::
 $ pydeckard
 ~~~
 
-...or delegate the startup of the application to your operating system using the instructions that setup has provided.
+...or delegate the startup of the application to your operating system using the instructions that setup has provided.  
+
+You can view the bot log using:
+
+~~~console
+$ journalctl -u pydeckard.service -f
+~~~
 
 
 ## Tests
