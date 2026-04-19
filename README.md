@@ -28,7 +28,7 @@ $ source ./venv/bin/activate
 $ pip3 install -e .[dev]
 ~~~
 
-Next step is to set your bot token.
+After installation, the next step is to set your bot token.
 In the virtual environment's working directory, you must create the .env file using the following command:
 
 ~~~console
