@@ -28,11 +28,14 @@ $ source ./venv/bin/activate
 $ pip3 install -e .[dev]
 ~~~
 
-After installation, the next step is to set your bot token.
-In the virtual environment's working directory, you must create the .env file using the following command:
+After installation, the next step is to create the .env configuration file and the file for automatic program 
+startup. 
+During the process, you will be asked to enter your Telegram token and will be prompted with other 
+configuration-related questions. The only required item is the Telegram token.
+To do this, run:
 
 ~~~console
-$ echo 'TELEGRAM_BOT_TOKEN = "<token of your dev bot>"' > .env
+$ python3 --setup
 ~~~
 
 Now you can launch the bot with:
