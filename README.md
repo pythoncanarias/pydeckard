@@ -28,8 +28,8 @@ $ source ./venv/bin/activate
 $ pip3 install -e .[dev]
 ~~~
 
-Next step is to set your bot token for development.
-In the same directory where bot.py lives, you must create the .env file using the following command:
+Next step is to set your bot token.
+In the virtual environment's working directory, you must create the .env file using the following command:
 
 ~~~console
 $ echo 'TELEGRAM_BOT_TOKEN = "<token of your dev bot>"' > .env
