@@ -185,7 +185,7 @@ def validate_input(prompt_head, acceptable=None, typus=None):
             continue
 
         if isinstance(acceptable, list) and data not in acceptable:
-            print(f'El valor debe ser una de estas opciones: {'/'.join(map(str, acceptable))}')
+            print(f'El valor debe ser una de estas opciones: {"/".join(map(str, acceptable))}')
             continue
 
         if isinstance(acceptable, tuple):

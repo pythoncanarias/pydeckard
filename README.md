@@ -32,10 +32,10 @@ After installation, the next step is to create the .env configuration file and t
 startup. 
 During the process, you will be asked to enter your Telegram token and will be prompted with other 
 configuration-related questions. The only required item is the Telegram token.
-To do this, run:
+To do this, activate the virtual environment and run:
 
 ~~~console
-$ python3 --setup
+$ bot --setup
 ~~~
 
 
