@@ -247,27 +247,30 @@ def setup_bot():
         service_path = root_path / 'pydeckard.service'
 
         service_content = f"""[Unit]
-        Description=PyDeckard
-        After=network.target
+Description=PyDeckard
+After=network.target
 
-        [Service]
-        Type=simple
-        User={user_name}
-        Group={group_name}
-        WorkingDirectory={root_path}
-        ExecStart={bot_executable}
-        Environment=PYTHONUNBUFFERED=1
-        Restart=always
+[Service]
+Type=simple
+User={user_name}
+Group={group_name}
+WorkingDirectory={root_path}
+ExecStart={bot_executable}
+Environment=PYTHONUNBUFFERED=1
+Restart=always
 
-        [Install]
-        WantedBy=multi-user.target
-        Alias=PyDeckard.service
-        """
+[Install]
+WantedBy=multi-user.target
+Alias=PyDeckard.service
+"""
 
         with open(service_path, 'w') as f:
             f.write(service_content)
 
         print(f'\nArchivo pydeckard.service creado en {root_path}')
+
+        print(f'\nPara configurar, activar e iniciar el service en systemd ejecute los siguientes comandos:')
+
         print(f'\nsudo cp {service_path} /etc/systemd/system/')
         print('sudo systemctl daemon-reload')
         print('sudo systemctl enable --now pydeckard')
