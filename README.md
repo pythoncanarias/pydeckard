@@ -45,6 +45,7 @@ Now you can launch the bot with:
 $ python3 bot.py
 ~~~
 
+...or delegate the startup of the application to your operating system using the instructions that setup has provided.
 
 
 ## Tests
