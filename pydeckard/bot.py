@@ -22,7 +22,6 @@ class DeckardBot():
     def __init__(self):
         self.get_options()
         self.set_logger()
-        self.verbose = False
         self.started_at = DateTime.now()
     
     def get_options(self):
@@ -31,25 +30,19 @@ class DeckardBot():
             description='PyDeckard Bot',
             epilog='Text at the bottom of help',
             )
-        parser.add_argument('-v', '--verbose', action='store_true')
         parser.add_argument('--setup', action='store_true', help='Start the setup wizard')
         args = parser.parse_args()
-        self.verbose = args.verbose
         if args.setup:
             utils.setup_bot()
 
     def set_logger(self):
         self.logger = logging.getLogger('bot')
 
-        file_handler = RotatingFileHandler('bot.log', maxBytes=1_000_000, backupCount=5)
-        console_handler = logging.NullHandler()
-        if self.verbose:
-            console_handler = logging.StreamHandler()
-
+        console_handler = logging.StreamHandler()
         logging.basicConfig(
                 level=logging.WARNING,  # Pone el nivel de todos los logger a WARNING
                 format='%(asctime)s [%(name)s] %(levelname)s: %(message)s',
-                handlers=[file_handler,console_handler],
+                handlers=[console_handler],
                 force=True
                 )
 

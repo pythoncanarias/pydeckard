@@ -38,17 +38,13 @@ To do this, run:
 $ python3 --setup
 ~~~
 
+
 Now you can launch the bot with:
 
 ~~~console
 $ python3 bot.py
 ~~~
 
-You can use the flag `--verbose` (or `-v') to get more information in rhe console:
-
-~~~console
-$ python3 bot.py --verbose
-~~~
 
 
 ## Tests
