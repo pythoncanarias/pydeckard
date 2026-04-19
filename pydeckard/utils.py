@@ -217,7 +217,7 @@ def setup_bot():
     print(f'\n--- Asistente de configuración para PyDeckard (SO: {system_name}) ---\n\n')
 
     parameters = [('TELEGRAM_BOT_TOKEN', 'Introduzca el Token del Bot', None, str),
-                  ('VERBOSITY', 'Nivel de verbosidad', (0.0, 1.0), float),
+                  ('BOT_VERBOSITY', 'Nivel de verbosidad', (0.0, 1.0), float),
                   ('LOG_LEVEL', 'Nivel de registro de logs', ['DEBUG', 'INFO', 'WARNING', 'ERROR'], str),
                   ('POLL_INTERVAL', 'Intervalo de polling para la API de Telegram', (1, 10), int),
                   ('BOT_GREETING', 'Saludo del bot', None, str),
