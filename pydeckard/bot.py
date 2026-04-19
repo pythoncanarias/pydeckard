@@ -28,7 +28,7 @@ class DeckardBot():
         parser = argparse.ArgumentParser(
             prog='bot',
             description='PyDeckard Bot',
-            epilog='Text at the bottom of help',
+            epilog='',
             )
         parser.add_argument('--setup', action='store_true', help='Start the setup wizard')
         args = parser.parse_args()
