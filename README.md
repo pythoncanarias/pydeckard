@@ -35,14 +35,14 @@ configuration-related questions. The only required item is the Telegram token.
 To do this, activate the virtual environment and run:
 
 ~~~console
-$ bot --setup
+$ pydeckard --setup
 ~~~
 
 
-Now you can launch the bot with:
+You can now launch the bot, activating the virtual environment and running::
 
 ~~~console
-$ python3 bot.py
+$ pydeckard
 ~~~
 
 ...or delegate the startup of the application to your operating system using the instructions that setup has provided.

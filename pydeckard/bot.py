@@ -36,7 +36,7 @@ class DeckardBot():
             utils.setup_bot()
 
     def set_logger(self):
-        self.logger = logging.getLogger('bot')
+        self.logger = logging.getLogger('pydeckard')
 
         console_handler = logging.StreamHandler()
         logging.basicConfig(
