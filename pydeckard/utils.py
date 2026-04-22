@@ -281,7 +281,7 @@ Alias=PyDeckard.service
 
     elif system_name == 'Windows':
         print(
-            'Entorno Windows detectado, configuración realizada, pregúntele
+            'Entorno Windows detectado, configuración realizada, pregúntele'
             ' a Microsoft® como arrancarlo.'
             )
         sys.exit(1)

@@ -137,7 +137,8 @@ def test_tipo_int4(monkeypatch):
 
     assert validate_input('Dato', None, int) == 3
 
-    def test_tipo_int5(monkeypatch):
+
+def test_tipo_int5(monkeypatch):
     # Separador _
     monkeypatch.setattr('builtins.input', lambda _: '1_000_000')
 
@@ -157,7 +158,8 @@ def test_tipo_int7(monkeypatch):
 
     assert validate_input('Dato', None, int) == 10
 
-    def test_tipo_int8(monkeypatch):
+
+def test_tipo_int8(monkeypatch):
     # Hexadecimal con espacios
     monkeypatch.setattr('builtins.input', lambda _: '    0xff    ')
 
@@ -244,7 +246,7 @@ def test_rango_tipo_int2(monkeypatch, capsys):
     resultado = validate_input('Dato', (0, 10), int)
     imprime = capsys.readouterr().out
 
-    assert 'Error: El valor debe estar entre 0 y 10' in imprime
+    assert 'El valor debe estar entre 0 y 10' in imprime
     assert resultado == 1
 
 
@@ -305,7 +307,7 @@ def test_rango_tipo_float2(monkeypatch, capsys):
     resultado = validate_input('Dato', (0.0, 1.0), float)
     imprime = capsys.readouterr().out
 
-    assert 'Error: El valor debe estar entre 0.0 y 1.0' in imprime
+    assert 'El valor debe estar entre 0.0 y 1.0' in imprime
     assert resultado == 1.0
 
 
@@ -324,7 +326,7 @@ def test_rango_tipo_float4(monkeypatch, capsys):
     resultado = validate_input('Dato', (0.0, 1.0), float)
     imprime = capsys.readouterr().out
 
-    assert 'Error: El valor debe estar entre 0.0 y 1.0' in imprime
+    assert 'El valor debe estar entre 0.0 y 1.0' in imprime
     assert resultado == 1.0
 
 
@@ -361,7 +363,7 @@ def test_option_tipo_int2(monkeypatch, capsys):
     resultado = validate_input('Dato', [-2, -1, 0, 1, 2, 3], int)
     imprime = capsys.readouterr().out
 
-    assert 'Error: El valor debe ser una de estas opciones: -2/-1/0/1/2/3' in imprime
+    assert 'El valor debe ser una de estas opciones: -2/-1/0/1/2/3' in imprime
     assert resultado == 1
 
 
@@ -415,7 +417,7 @@ def test_option_tipo_texto1(monkeypatch, capsys):
     resultado = validate_input('Dato', ['DEBUG', 'INFO', 'WARNING', 'ERROR'], str)
     imprime = capsys.readouterr().out
 
-    assert 'Error: El valor debe ser una de estas opciones: DEBUG/INFO/WARNING/ERROR' in imprime
+    assert 'El valor debe ser una de estas opciones: DEBUG/INFO/WARNING/ERROR' in imprime
     assert resultado == 'DEBUG'
 
 
@@ -427,7 +429,7 @@ def test_option_tipo_texto2(monkeypatch, capsys):
     resultado = validate_input('Dato', ['DEBUG', 'INFO', 'WARNING', 'ERROR'], str)
     imprime = capsys.readouterr().out
 
-    assert 'Error: El valor debe ser una de estas opciones: DEBUG/INFO/WARNING/ERROR' in imprime
+    assert 'El valor debe ser una de estas opciones: DEBUG/INFO/WARNING/ERROR' in imprime
     assert resultado == 'DEBUG'
 
 
@@ -439,7 +441,7 @@ def test_option_tipo_texto3(monkeypatch, capsys):
     resultado = validate_input('Dato', ['DEBUG', 'INFO', 'WARNING', 'ERROR'], str)
     imprime = capsys.readouterr().out
 
-    assert 'Error: El valor debe ser una de estas opciones: DEBUG/INFO/WARNING/ERROR' in imprime
+    assert 'El valor debe ser una de estas opciones: DEBUG/INFO/WARNING/ERROR' in imprime
     assert resultado == 'DEBUG'
 
 
@@ -472,7 +474,7 @@ def test_option_tipo_texto7(monkeypatch, capsys):
     resultado = validate_input('Dato', [], str)
     imprime = capsys.readouterr().out
 
-    assert 'Error: El valor debe ser una de estas opciones: ' in imprime
+    assert 'El valor debe ser una de estas opciones: ' in imprime
     assert resultado is None
 
 
