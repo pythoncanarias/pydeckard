@@ -19,29 +19,39 @@ $ source ./bin/activate
 $ ./bin/pip install git+https://github.com/misanram/pydeckard.git@Instalar-desde-GitHub
 ~~~
 
-A developer needs to install a few more packages:
+As a developer, you must install it in this other way:
 
 ~~~console
 $ ./bin/pip install git+https://github.com/misanram/pydeckard.git@Instalar-desde-GitHub[dev]
 ~~~
 
-Next step is to set your bot token for development:
+After installation, the next step is to create the .env configuration file and
+the file for automatic program startup. 
+
+During the process, you will be asked to enter your Telegram token and
+will be prompted with other configuration-related questions. The only required
+item is the Telegram token.
+
+To do this, activate the virtual environment and run:
 
 ~~~console
-$ echo 'TELEGRAM_BOT_TOKEN = "<token of your dev bot>"' > .env
+$ pydeckard --setup
 ~~~
 
-Now you can launch the bot with:
+You can now launch the bot, activating the virtual environment and running::
 
 ~~~console
-$ python3 bot.py
+$ pydeckard
 ~~~
 
-~~~systemd
+.. or delegate the startup of the application to your operating system
+using the instructions that setup has provided.
 
+You can view the bot log using:
 
-
-
+~~~console
+$ journalctl -u pydeckard.service -f systemd
+~~~
 
 You can use the flag `--verbose` (or `-v') to get more information in the console:
 

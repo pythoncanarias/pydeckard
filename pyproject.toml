@@ -36,10 +36,8 @@ include = ["pydeckard*"]
 where = ["."]
 
 [project.scripts]
-bot = "pydeckard.bot:main"
-
+pydeckard = "pydeckard.bot:main"
 
 [tool.ruff]
 line-length = 120
 target-version = "py312"
-

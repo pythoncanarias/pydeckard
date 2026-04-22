@@ -137,7 +137,7 @@ def test_tipo_int4(monkeypatch):
 
     assert validate_input('Dato', None, int) == 3
 
-def test_tipo_int5(monkeypatch):
+    def test_tipo_int5(monkeypatch):
     # Separador _
     monkeypatch.setattr('builtins.input', lambda _: '1_000_000')
 
@@ -157,13 +157,13 @@ def test_tipo_int7(monkeypatch):
 
     assert validate_input('Dato', None, int) == 10
 
-def test_tipo_int8(monkeypatch):
+    def test_tipo_int8(monkeypatch):
     # Hexadecimal con espacios
     monkeypatch.setattr('builtins.input', lambda _: '    0xff    ')
 
     assert validate_input('Dato', None, int) == 255
 
-
+    
 def test_tipo_int15(monkeypatch, capsys):
     # Float
     entradas = iter(['1.0', '1'])

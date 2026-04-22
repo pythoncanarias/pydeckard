@@ -1,19 +1,20 @@
 #!/usr/bin/enb python3
+
 from datetime import datetime as DateTime
 import itertools
 import argparse
 import logging
 import sys
 import time
+from logging.handlers import RotatingFileHandler
 
 import telegram
 from telegram import Update
 from telegram.ext import ApplicationBuilder, filters, MessageHandler, CommandHandler, ContextTypes
 from telegram.constants import ParseMode
 
-
-from pydeckard import utils
 from pydeckard import config
+from pydeckard import utils
 
 
 class DeckardBot():
@@ -27,32 +28,28 @@ class DeckardBot():
         parser = argparse.ArgumentParser(
             prog='bot',
             description='PyDeckard Bot',
-            epilog='Text at the bottom of help',
+            epilog='',
             )
         parser.add_argument('--setup', action='store_true', help='Start the setup wizard')
         args = parser.parse_args()
         if args.setup:
             utils.setup_bot()
 
-
     def set_logger(self):
-        self.logger = logging.getLogger('bot')
-
+        self.logger = logging.getLogger('pydeckard')
         console_handler = logging.StreamHandler()
         logging.basicConfig(
-                level=logging.DEBUG,  # Pone el nivel de todos los logger a WARNING
-                format='%(asctime)s [%(name)s] %(levelname)s: %(message)s',
-                handlers=[console_handler],
-                force=True
-                )
-
+            level=logging.WARNING,  # Pone el nivel de todos los logger a WARNING
+            format='%(asctime)s [%(name)s] %(levelname)s: %(message)s',
+            handlers=[console_handler],
+            force=True,
+            )
         # Ajustamos el nivel del logger bot
         self.logger.setLevel(config.LOG_LEVEL)
         config.log(self.logger.info)
 
     def trace(self, msg):
         self.logger.info(msg)
-
 
     async def command_status(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
         self.trace('Received command: /status')
@@ -136,8 +133,10 @@ class DeckardBot():
                   "-> It could be kindly removed 🗑"
         else:
             if utils.is_bot(new_member):
-                await context.bot.delete_message(update.message.chat_id,
-                                           update.message.message_id)
+                await context.bot.delete_message(
+                    update.message.chat_id,
+                    update.message.message_id,
+                )
                 if await context.bot.kick_chat_member(update.message.chat_id, new_member.id):
                     msg = (f"*{new_member.username}* has been banned because I "
                            "considered it was a bot. ")
@@ -186,8 +185,13 @@ class DeckardBot():
 
 
 def main():
+    """
+    Arranca el bot
+    """
+
     bot = DeckardBot()
     bot.run()
 
+    
 if __name__ == "__main__":
     main()

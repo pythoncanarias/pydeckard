@@ -103,7 +103,7 @@ REPLIES = {
     ("elixir",): "BIBA ELICSÍR!! ¥",
     ("cobol",): "BIBA KOBOL!! 💾",
     ("fortran",): "BIBA FORRRTRÁN!! √",
-    (r"c\+\+",): "BIBA CEMASMÁS!! ⊕",
+    ("c++",): "BIBA CEMASMÁS!! ⊕",
     ("javascript",): "BIBA JABAESCRIP!! 🔮",
     ("php",): "BIBA PEACHEPÉ!.! ⛱",
     ("perl",): "BIBA PERRRRRL! 🐫",
@@ -121,3 +121,7 @@ REPLIES = {
     "tiempo... como lágrimas en la lluvia. Es hora de morir. 🔫",
     ("python", "pitón", "piton"): THE_ZEN_OF_PYTHON,
 }
+
+MAXLEN_FOR_USERNAME_TO_TREAT_AS_HUMAN = 100
+
+CHINESE_CHARS_MAX_PERCENT = 0.15
