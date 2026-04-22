@@ -1,3 +1,44 @@
+[build-system]
+requires = ['setuptools>=61.0']
+build-backend = 'setuptools.build_meta'
+
+[project]
+name = 'pydeckard'
+description = 'Un bot de Telegram para el canal de Python Canarias'
+requires-python = '>=3.10'
+authors = [
+    { name = 'Python Canarias', email = 'info@pythoncanarias.es' },
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.12",
+    "Operating System :: OS Independent",
+    "Intended Audience :: Developers",
+    "Topic :: Communications :: Chat",
+]
+license = "GPL-3.0-or-later"
+license-files = ["LICENSE"]
+dynamic = ['dependencies', 'readme', 'optional-dependencies']
+version="0.1.7"
+
+[project.urls]
+Homepage = "https://github.com/pythoncanarias/pydeckard.git"
+
+[tool.setuptools.dynamic]
+readme = { file = ['README.md', ] }
+dependencies = { file = 'requirements.txt' }
+
+[tool.setuptools.dynamic.optional-dependencies]
+dev = { file = ["dev-requirements.txt"] }
+
+[tool.setuptools.packages.find]
+include = ["pydeckard*"]
+where = ["."]
+
+[project.scripts]
+bot = "pydeckard.bot:main"
+
+
 [tool.ruff]
 line-length = 120
 target-version = "py312"

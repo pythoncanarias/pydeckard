@@ -10,18 +10,19 @@ Telegram Bot made in Python to automate different tasks of [Python Canarias](htt
 ## Installation
 
 Create a virtualenv for Python3 and install dependencies. In this
-example we are using pyenv:
+example we are using python -m venv:
 
 ~~~console
-$ pyenv virtualenv 3.12.4 pydeckard
-$ pyenv activate pydeckard
-$ pip install -r requirements.txt
+$ python -m venv pydeckard
+$ cd pydeckard
+$ source ./bin/activate
+$ ./bin/pip install git+https://github.com/misanram/pydeckard.git@Instalar-desde-GitHub
 ~~~
 
 A developer needs to install a few more packages:
 
 ~~~console
-$ pip install -r dev-requirements.txt
+$ ./bin/pip install git+https://github.com/misanram/pydeckard.git@Instalar-desde-GitHub[dev]
 ~~~
 
 Next step is to set your bot token for development:
@@ -33,13 +34,19 @@ $ echo 'TELEGRAM_BOT_TOKEN = "<token of your dev bot>"' > .env
 Now you can launch the bot with:
 
 ~~~console
-$ python bot.py
+$ python3 bot.py
 ~~~
 
-You can use the flag `--verbose` (or `-v') to get more information in rhe console:
+~~~systemd
+
+
+
+
+
+You can use the flag `--verbose` (or `-v') to get more information in the console:
 
 ~~~console
-$ python bot.py --verbose
+$ python3 bot.py --verbose
 ~~~
 
 
@@ -48,5 +55,5 @@ $ python bot.py --verbose
 Use pytest:
 
 ~~~console
-$ python -m pytest
+$ python3 -m pytest
 ~~~

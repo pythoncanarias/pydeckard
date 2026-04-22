@@ -1,20 +1,19 @@
 #!/usr/bin/enb python3
-
 from datetime import datetime as DateTime
 import itertools
 import argparse
 import logging
 import sys
 import time
-from logging.handlers import RotatingFileHandler
 
 import telegram
 from telegram import Update
 from telegram.ext import ApplicationBuilder, filters, MessageHandler, CommandHandler, ContextTypes
 from telegram.constants import ParseMode
 
-import config
-import utils
+
+from pydeckard import utils
+from pydeckard import config
 
 
 class DeckardBot():
@@ -22,7 +21,6 @@ class DeckardBot():
     def __init__(self):
         self.get_options()
         self.set_logger()
-        self.verbose = False
         self.started_at = DateTime.now()
     
     def get_options(self):
@@ -31,22 +29,20 @@ class DeckardBot():
             description='PyDeckard Bot',
             epilog='Text at the bottom of help',
             )
-        parser.add_argument('-v', '--verbose', action='store_true')
+        parser.add_argument('--setup', action='store_true', help='Start the setup wizard')
         args = parser.parse_args()
-        self.verbose = args.verbose
+        if args.setup:
+            utils.setup_bot()
+
 
     def set_logger(self):
         self.logger = logging.getLogger('bot')
 
-        file_handler = RotatingFileHandler('bot.log', maxBytes=1_000_000, backupCount=5)
-        console_handler = logging.NullHandler()
-        if self.verbose:
-            console_handler = logging.StreamHandler()
-
+        console_handler = logging.StreamHandler()
         logging.basicConfig(
-                level=logging.WARNING,  # Pone el nivel de todos los logger a WARNING
+                level=logging.DEBUG,  # Pone el nivel de todos los logger a WARNING
                 format='%(asctime)s [%(name)s] %(levelname)s: %(message)s',
-                handlers=[file_handler,console_handler],
+                handlers=[console_handler],
                 force=True
                 )
 
@@ -56,6 +52,7 @@ class DeckardBot():
 
     def trace(self, msg):
         self.logger.info(msg)
+
 
     async def command_status(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
         self.trace('Received command: /status')
@@ -188,6 +185,9 @@ class DeckardBot():
         application.run_polling(poll_interval=config.POLL_INTERVAL)
 
 
-if __name__ == "__main__":
+def main():
     bot = DeckardBot()
     bot.run()
+
+if __name__ == "__main__":
+    main()
