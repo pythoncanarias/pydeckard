@@ -265,7 +265,8 @@ Alias=PyDeckard.service
             f.write(service_content)
 
         print(f'\nArchivo pydeckard.service creado en {root_path}')
-        print(f'\nPara configurar, activar e iniciar el service en systemd ejecute los siguientes comandos:')
+        print('\nPara configurar, activar e iniciar el service')
+        print('\nen systemd ejecute los siguientes comandos:')
 
         print(f'\nsudo cp {service_path} /etc/systemd/system/')
         print('sudo systemctl daemon-reload')

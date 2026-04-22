@@ -1,12 +1,12 @@
 #!/usr/bin/enb python3
 
 from datetime import datetime as DateTime
-import itertools
 import argparse
+import itertools
 import logging
 import sys
 import time
-from logging.handlers import RotatingFileHandler
+import tomllib
 
 import telegram
 from telegram import Update
@@ -31,6 +31,9 @@ class DeckardBot():
             epilog='',
             )
         parser.add_argument('--setup', action='store_true', help='Start the setup wizard')
+        with open('pyproject.toml', 'rb') as fp:
+            conf = tomllib.load(fp)
+            self.version = conf['project']['version']
         args = parser.parse_args()
         if args.setup:
             utils.setup_bot()
@@ -57,7 +60,7 @@ class DeckardBot():
         text = '\n'.join([
             config.BOT_GREETING,
             f'Status is <b>OK</b>, running since {utils.since(self.started_at)}',
-            f'Python version is {python_version}',
+            f'Python version is {python_version}, bot version is {self.version}',
             ])
         await context.bot.send_message(
             chat_id=update.effective_chat.id,
