@@ -37,15 +37,13 @@ class DeckardBot():
 
     def set_logger(self):
         self.logger = logging.getLogger('pydeckard')
-
         console_handler = logging.StreamHandler()
         logging.basicConfig(
-                level=logging.WARNING,  # Pone el nivel de todos los logger a WARNING
-                format='%(asctime)s [%(name)s] %(levelname)s: %(message)s',
-                handlers=[console_handler],
-                force=True
-                )
-
+            level=logging.WARNING,  # Pone el nivel de todos los logger a WARNING
+            format='%(asctime)s [%(name)s] %(levelname)s: %(message)s',
+            handlers=[console_handler],
+            force=True,
+            )
         # Ajustamos el nivel del logger bot
         self.logger.setLevel(config.LOG_LEVEL)
         config.log(self.logger.info)
@@ -135,8 +133,10 @@ class DeckardBot():
                   "-> It could be kindly removed 🗑"
         else:
             if utils.is_bot(new_member):
-                await context.bot.delete_message(update.message.chat_id,
-                                           update.message.message_id)
+                await context.bot.delete_message(
+                    update.message.chat_id,
+                    update.message.message_id,
+                )
                 if await context.bot.kick_chat_member(update.message.chat_id, new_member.id):
                     msg = (f"*{new_member.username}* has been banned because I "
                            "considered it was a bot. ")
@@ -192,6 +192,6 @@ def main():
     bot = DeckardBot()
     bot.run()
 
-
+    
 if __name__ == "__main__":
     main()

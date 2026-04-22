@@ -45,7 +45,7 @@ def is_tgmember_sect(first_name: str):
     return "tgmember.com" in first_name.lower()
 
 
-def is_bot(user: User):
+def is_bot(user: User) -> bool:
     """
     Returns True if a new user is a bot. So far only the length of the
     username is checked. In the future, we can add more conditions and use a
@@ -57,13 +57,11 @@ def is_bot(user: User):
     :rtype: bool
     """
     # Add all the checks that you consider necessary
-    return any(
-        (
-            not is_valid_name(user),
-            too_much_chinese_chars(user.first_name),
-            is_tgmember_sect(user.first_name),
-        )
-    )
+    return any([
+        not is_valid_name(user),
+        too_much_chinese_chars(user.first_name),
+        is_tgmember_sect(user.first_name),
+        ])
 
 
 @functools.lru_cache()
@@ -185,7 +183,7 @@ def validate_input(prompt_head, acceptable=None, typus=None):
             continue
 
         if isinstance(acceptable, list) and data not in acceptable:
-            print(f'El valor debe ser una de estas opciones: {"/".join(map(str, acceptable))}')
+            print(f'El valor debe ser una de estas opciones: {'/'.join(map(str, acceptable))}')
             continue
 
         if isinstance(acceptable, tuple):
@@ -216,15 +214,15 @@ def setup_bot():
 
     print(f'\n--- Asistente de configuración para PyDeckard (SO: {system_name}) ---\n\n')
 
-    parameters = [('TELEGRAM_BOT_TOKEN', 'Introduzca el Token del Bot', None, str),
-                  ('BOT_VERBOSITY', 'Nivel de verbosidad', (0.0, 1.0), float),
-                  ('LOG_LEVEL', 'Nivel de registro de logs', ['DEBUG', 'INFO', 'WARNING', 'ERROR'], str),
-                  ('POLL_INTERVAL', 'Intervalo de polling para la API de Telegram', (1, 10), int),
-                  ('BOT_GREETING', 'Saludo del bot', None, str),
-                  ('MAX_HUMAN_USERNAME_LENGTH', 'Longitud máxima del username', None, int),
-                  ('MAX_CHINESE_CHARS_PERCENT', 'Máximo porcentaje de caracteres chinos en username',
-                   (0.0, 1.0), float),
-                  ('WELCOME_DELAY', 'Tiempo de retardo para la bienvenida (seg)', None, int), ]
+    parameters = [
+        ('TELEGRAM_BOT_TOKEN', 'Introduzca el Token del Bot', None, str),
+        ('LOG_LEVEL', 'Nivel de registro de logs', ['DEBUG', 'INFO', 'WARNING', 'ERROR'], str),
+        ('POLL_INTERVAL', 'Intervalo de polling para la API de Telegram', (1, 10), int),
+        ('BOT_GREETING', 'Saludo del bot', None, str),
+        ('MAX_HUMAN_USERNAME_LENGTH', 'Longitud máxima del username', None, int),
+        ('MAX_CHINESE_CHARS_PERCENT', 'Máximo porcentaje de caracteres chinos en username', (0.0, 1.0), float),
+        ('WELCOME_DELAY', 'Tiempo de retardo para la bienvenida (seg)', None, int),
+        ]
 
     try:
         items_env = {key: validate_input(*args) for key, *args in parameters}
@@ -263,29 +261,31 @@ Restart=always
 WantedBy=multi-user.target
 Alias=PyDeckard.service
 """
-
         with open(service_path, 'w') as f:
             f.write(service_content)
 
         print(f'\nArchivo pydeckard.service creado en {root_path}')
-
         print(f'\nPara configurar, activar e iniciar el service en systemd ejecute los siguientes comandos:')
 
         print(f'\nsudo cp {service_path} /etc/systemd/system/')
         print('sudo systemctl daemon-reload')
         print('sudo systemctl enable --now pydeckard')
-
         sys.exit(0)
 
     elif system_name == 'Darwin':
-        print('Entorno macOS detectado, configuración realizada, pregúntele a Apple® como arrancarlo.')
+        print(
+            'Entorno macOS detectado, configuración realizada, pregúntele'
+            ' a Apple® como arrancarlo.'
+            )
         sys.exit(1)
 
     elif system_name == 'Windows':
-        print('Entorno Windows detectado, configuración realizada, pregúntele a Microsoft® como arrancarlo.')
+        print(
+            'Entorno Windows detectado, configuración realizada, pregúntele
+            ' a Microsoft® como arrancarlo.'
+            )
         sys.exit(1)
 
     elif system_name == 'Java':
         print('Entorno Jython detectado. Usted mismo.')
         sys.exit(1)
-

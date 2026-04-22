@@ -11,7 +11,7 @@ authors = [
 ]
 classifiers = [
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.12",
     "Operating System :: OS Independent",
     "Intended Audience :: Developers",
     "Topic :: Communications :: Chat",
@@ -19,7 +19,7 @@ classifiers = [
 license = "GPL-3.0-or-later"
 license-files = ["LICENSE"]
 dynamic = ['dependencies', 'readme', 'optional-dependencies']
-version="0.1.0"
+version="0.1.7"
 
 [project.urls]
 Homepage = "https://github.com/pythoncanarias/pydeckard.git"
