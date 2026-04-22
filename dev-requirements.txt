@@ -1,4 +1,0 @@
-ruff
-rope
-pytest
-freezegun
