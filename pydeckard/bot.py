@@ -6,7 +6,6 @@ import itertools
 import logging
 import sys
 import time
-import tomllib
 
 import telegram
 from telegram import Update
@@ -15,7 +14,7 @@ from telegram.constants import ParseMode
 
 from pydeckard import config
 from pydeckard import utils
-
+from pydeckard import __version__
 
 class DeckardBot():
 
@@ -31,9 +30,6 @@ class DeckardBot():
             epilog='',
             )
         parser.add_argument('--setup', action='store_true', help='Start the setup wizard')
-        with open('pyproject.toml', 'rb') as fp:
-            conf = tomllib.load(fp)
-            self.version = conf['project']['version']
         args = parser.parse_args()
         if args.setup:
             utils.setup_bot()
@@ -60,7 +56,7 @@ class DeckardBot():
         text = '\n'.join([
             config.BOT_GREETING,
             f'Status is <b>OK</b>, running since {utils.since(self.started_at)}',
-            f'Python version is {python_version}, bot version is {self.version}',
+            f'Python version is {python_version}, bot version is {__version__}',
             ])
         await context.bot.send_message(
             chat_id=update.effective_chat.id,
@@ -183,7 +179,7 @@ class DeckardBot():
             self.reply,
             )
         application.add_handler(reply_handler)
-        self.trace('Bot is ready')
+        self.trace(f'Bot is ready (v{__version__})')
         application.run_polling(poll_interval=config.POLL_INTERVAL)
 
 
