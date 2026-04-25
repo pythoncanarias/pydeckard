@@ -47,15 +47,12 @@ class DeckardBot():
             handlers=[console_handler],
             force=True,
             )
-        # Ajustamos el nivel del logger bot
+        # Ajustamos el nivel del logger pydeckard
         self.logger.setLevel(config.LOG_LEVEL)
         config.log(self.logger.info)
 
-    def trace(self, msg):
-        self.logger.info(msg)
-
     async def command_status(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
-        self.trace('Received command: /status')
+        self.logger.info('Received command: /status')
         python_version = sys.version.split(maxsplit=1)[0]
         text = '\n'.join([
             config.BOT_GREETING,
@@ -67,10 +64,10 @@ class DeckardBot():
             text=text,
             parse_mode=ParseMode.HTML,
             )
-        self.trace(text)
+        self.logger.info(text)
 
     async def command_start(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
-        self.trace('Received command: /start')
+        self.logger.info('Received command: /start')
         await context.bot.send_message(
             chat_id=update.effective_chat.id,
             text=config.BOT_GREETING,
@@ -78,7 +75,7 @@ class DeckardBot():
             )
 
     async def command_help(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
-        self.trace('Received command: /help')
+        self.logger.info('Received command: /help')
         await context.bot.send_message(
             chat_id=update.effective_chat.id,
             text=(
@@ -93,7 +90,7 @@ class DeckardBot():
             )
 
     async def command_zen(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
-        self.trace('Received command: /zen')
+        self.logger.info('Received command: /zen')
         text = '\n'.join(config.THE_ZEN_OF_PYTHON)
         await context.bot.send_message(
             chat_id=update.effective_chat.id,
@@ -102,7 +99,7 @@ class DeckardBot():
             )
 
     async def command_config(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
-        self.trace('Received command: /config')
+        self.logger.info('Received command: /config')
         buff = [
             f'Probabilidad de responder: {config.VERBOSITY:.2f}',
             'Disparadores:',
@@ -118,17 +115,17 @@ class DeckardBot():
             )
 
     async def welcome(self, update: Update, context):
-        self.trace('Received new user event')
+        self.logger.info('Received new user event')
         new_member = update.message.new_chat_members[0]
 
-        self.trace(f'Waiting {config.WELCOME_DELAY} seconds until user completes captcha...')
+        self.logger.info('Waiting %s seconds until user completes captcha...', config.WELCOME_DELAY)
         time.sleep(config.WELCOME_DELAY)
         membership_info = await context.bot.get_chat_member(update.message.chat_id, new_member.id)
         if membership_info['status'] == 'left':
-            self.trace(f'Skipping welcome message, user {new_member.name} is no longer in the chat')
+            self.logger.info('Skipping welcome message, user %s is no longer in the chat', new_member.name)
             return
 
-        self.trace(f'Send welcome message for {new_member.name}')
+        self.logger.info('Send welcome message for %s', new_member.name)
         msg = None
 
         if new_member.is_bot:
@@ -154,11 +151,11 @@ class DeckardBot():
             msg = update.message.text
             reply_spec = utils.triggers_reply(msg) if msg else None
             if reply_spec is not None:
-                self.trace(f'Sending reply: {reply_spec.reply}')
+                self.logger.info('Sending reply: %s', reply_spec.reply)
                 await update.message.reply_text(reply_spec.reply)
 
     def run(self):
-        self.trace('Starting bot')
+        self.logger.info('Starting bot')
         application = ApplicationBuilder().token(config.TELEGRAM_BOT_TOKEN).build()
         start_handler = CommandHandler('start', self.command_start)
         application.add_handler(start_handler)
@@ -183,7 +180,7 @@ class DeckardBot():
             self.reply,
             )
         application.add_handler(reply_handler)
-        self.trace('Bot is ready')
+        self.logger.info('Bot is ready')
         application.run_polling(poll_interval=config.POLL_INTERVAL)
 
 
