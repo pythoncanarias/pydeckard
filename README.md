@@ -16,13 +16,17 @@ example we are using python -m venv:
 $ python -m venv pydeckard
 $ cd pydeckard
 $ source ./bin/activate
-$ ./bin/pip install git+https://github.com/misanram/pydeckard.git@Instalar-desde-GitHub
+$ ./bin/pip install git+https://github.com/pythoncanarias/pydeckard.git
 ~~~
 
 As a developer, you must install it in this other way:
 
 ~~~console
-$ ./bin/pip install git+https://github.com/misanram/pydeckard.git@Instalar-desde-GitHub[dev]
+$ git clone https://github.com/pythoncanarias/pydeckard.git
+$ cd pydeckard
+$ python3 -m venv venv
+$ source ./venv/bin/activate
+$ pip3 install -e .[dev]
 ~~~
 
 After installation, the next step is to create the .env configuration file and
@@ -50,13 +54,7 @@ using the instructions that setup has provided.
 You can view the bot log using:
 
 ~~~console
-$ journalctl -u pydeckard.service -f systemd
-~~~
-
-You can use the flag `--verbose` (or `-v') to get more information in the console:
-
-~~~console
-$ python3 bot.py --verbose
+$ journalctl -u pydeckard.service -f
 ~~~
 
 
